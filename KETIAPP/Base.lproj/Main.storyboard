@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="KETIViewController" id="BYZ-38-t0r" customClass="KETIViewController" customModule="KETIAPP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="awS-aa-npm" userLabel="StateView">
+                                <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="안정 상태" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhR-K4-ACc">
+                                        <rect key="frame" x="156" y="22" width="81" height="26.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="I8k-kg-bWk">
+                                        <rect key="frame" x="166.66666666666666" y="5.3333333333333357" width="60" height="58.666666666666664"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="5KY-aI-kRL"/>
+                                            <constraint firstAttribute="height" constant="60" id="YkG-KN-UgL"/>
+                                        </constraints>
+                                        <imageReference key="image" image="sun.max.trianglebadge.exclamationmark" catalog="system" renderingMode="original"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="dhR-K4-ACc" firstAttribute="centerY" secondItem="awS-aa-npm" secondAttribute="centerY" id="Dl2-dx-7RC"/>
+                                    <constraint firstItem="I8k-kg-bWk" firstAttribute="centerY" secondItem="awS-aa-npm" secondAttribute="centerY" id="Rzl-F7-hUv"/>
+                                    <constraint firstItem="dhR-K4-ACc" firstAttribute="centerX" secondItem="awS-aa-npm" secondAttribute="centerX" id="dNi-5i-J8f"/>
+                                    <constraint firstAttribute="height" constant="70" id="lfI-Wv-8Ie"/>
+                                    <constraint firstItem="I8k-kg-bWk" firstAttribute="centerX" secondItem="awS-aa-npm" secondAttribute="centerX" id="oo5-EL-rdi"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxG-IC-3fd" userLabel="LocationView">
+                                <rect key="frame" x="0.0" y="129" width="393" height="80"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 위치" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxh-Bl-CnW">
+                                        <rect key="frame" x="161.33333333333334" y="10" width="70.333333333333343" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="충남 아산시 순천향대학교" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6e-Ue-4Mz">
+                                        <rect key="frame" x="111.33333333333333" y="30" width="170.66666666666669" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="W3W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VfC-zr-rk2">
+                                        <rect key="frame" x="175.66666666666666" y="49" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Yxh-Bl-CnW" firstAttribute="top" secondItem="cxG-IC-3fd" secondAttribute="top" constant="10" id="FG9-fK-gp3"/>
+                                    <constraint firstAttribute="bottom" secondItem="VfC-zr-rk2" secondAttribute="bottom" constant="10" id="PDm-AQ-Bs1"/>
+                                    <constraint firstItem="N6e-Ue-4Mz" firstAttribute="centerY" secondItem="cxG-IC-3fd" secondAttribute="centerY" id="WhU-Od-URI"/>
+                                    <constraint firstAttribute="height" constant="80" id="gK2-wG-eBK"/>
+                                    <constraint firstItem="VfC-zr-rk2" firstAttribute="centerX" secondItem="cxG-IC-3fd" secondAttribute="centerX" id="hLk-j8-s2N"/>
+                                    <constraint firstItem="N6e-Ue-4Mz" firstAttribute="centerX" secondItem="cxG-IC-3fd" secondAttribute="centerX" id="hcX-AD-OpL"/>
+                                    <constraint firstItem="Yxh-Bl-CnW" firstAttribute="centerX" secondItem="cxG-IC-3fd" secondAttribute="centerX" id="vGW-et-2pQ"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="EarthquakeCollectionView" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Px6-dA-Hpt" customClass="EarthquakeCollectionView" customModule="KETIAPP" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="209" width="393" height="643"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cW2-W4-dzS">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="EarthquakeInfoCell1" reuseIdentifier="EarthquakeInfoCell1" id="ven-Ue-6LB" customClass="EarthquakeInfoCell1" customModule="KETIAPP" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="58.666666666666664" width="195" height="191"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="f77-Ms-9fy">
+                                            <rect key="frame" x="0.0" y="0.0" width="195" height="191"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="195" height="191"/>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EarthquakeInfoCell2" id="oHg-nS-mZb" customClass="EarthquakeInfoCell2" customModule="KETIAPP" customModuleProvider="target">
+                                        <rect key="frame" x="205" y="0.0" width="167" height="308"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="IZe-ut-6pf">
+                                            <rect key="frame" x="0.0" y="0.0" width="167" height="308"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="167" height="308"/>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Px6-dA-Hpt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0DH-Tq-htn"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="awS-aa-npm" secondAttribute="trailing" id="33m-Iq-BHk"/>
+                            <constraint firstItem="cxG-IC-3fd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="GgQ-Lc-YD7"/>
+                            <constraint firstItem="cxG-IC-3fd" firstAttribute="top" secondItem="awS-aa-npm" secondAttribute="bottom" id="LfC-6X-Rk2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Px6-dA-Hpt" secondAttribute="trailing" id="OVJ-x7-THd"/>
+                            <constraint firstItem="awS-aa-npm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="YAt-7I-nEb"/>
+                            <constraint firstItem="Px6-dA-Hpt" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="YYM-yf-Q9d"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cxG-IC-3fd" secondAttribute="trailing" id="g4k-4K-dd2"/>
+                            <constraint firstItem="awS-aa-npm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="rrC-91-txq"/>
+                            <constraint firstItem="Px6-dA-Hpt" firstAttribute="top" secondItem="cxG-IC-3fd" secondAttribute="bottom" id="vww-es-FhM"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="W3WLabel" destination="VfC-zr-rk2" id="jCl-ry-JYk"/>
+                        <outlet property="currentLocationLabel" destination="N6e-Ue-4Mz" id="TEJ-As-M5s"/>
+                        <outlet property="earthquakeCollectionView" destination="Px6-dA-Hpt" id="EzY-jO-Qm3"/>
+                        <outlet property="locationLabel" destination="Yxh-Bl-CnW" id="8lt-ea-dYh"/>
+                        <outlet property="locationView" destination="cxG-IC-3fd" id="b0b-YS-jCB"/>
+                        <outlet property="stateImageView" destination="I8k-kg-bWk" id="YX8-mS-cw1"/>
+                        <outlet property="stateLabel" destination="dhR-K4-ACc" id="fID-yb-ICZ"/>
+                        <outlet property="stateView" destination="awS-aa-npm" id="Jlt-4P-edb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="135.1145038167939" y="4.9295774647887329"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="sun.max.trianglebadge.exclamationmark" catalog="system" width="128" height="117"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
