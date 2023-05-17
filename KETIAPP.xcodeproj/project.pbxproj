@@ -20,8 +20,8 @@
 		FD55F2DE2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2DD2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift */; };
 		FD55F2E02A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2DF2A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift */; };
 		FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E32A0DFF800067E0D4 /* Detect.swift */; };
-		FD55F2E72A0E07FE0067E0D4 /* WhileEarthquake.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E62A0E07FE0067E0D4 /* WhileEarthquake.swift */; };
-		FD55F2E92A0E082B0067E0D4 /* NormalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E82A0E082B0067E0D4 /* NormalState.swift */; };
+		FD55F2E92A0E082B0067E0D4 /* EarthquakeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */; };
+		FDF3FD582A14A94800F27371 /* NewsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF3FD572A14A94800F27371 /* NewsScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,8 +59,8 @@
 		FD55F2DD2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeInfoCell1.swift; sourceTree = "<group>"; };
 		FD55F2DF2A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeInfoCell2.swift; sourceTree = "<group>"; };
 		FD55F2E32A0DFF800067E0D4 /* Detect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detect.swift; sourceTree = "<group>"; };
-		FD55F2E62A0E07FE0067E0D4 /* WhileEarthquake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhileEarthquake.swift; sourceTree = "<group>"; };
-		FD55F2E82A0E082B0067E0D4 /* NormalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalState.swift; sourceTree = "<group>"; };
+		FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeState.swift; sourceTree = "<group>"; };
+		FDF3FD572A14A94800F27371 /* NewsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +114,7 @@
 				FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */,
 				FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */,
 				FD55F2AC2A0DBC370067E0D4 /* KETIViewController.swift */,
+				FDF3FD572A14A94800F27371 /* NewsScrollView.swift */,
 				FD55F2E52A0E07E40067E0D4 /* CollectionViewComponents */,
 				FD55F2E22A0DFF430067E0D4 /* DetectEarthquake */,
 				FD55F2E12A0DFF250067E0D4 /* EarthquakeCollectionView */,
@@ -163,8 +164,7 @@
 		FD55F2E52A0E07E40067E0D4 /* CollectionViewComponents */ = {
 			isa = PBXGroup;
 			children = (
-				FD55F2E82A0E082B0067E0D4 /* NormalState.swift */,
-				FD55F2E62A0E07FE0067E0D4 /* WhileEarthquake.swift */,
+				FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */,
 			);
 			path = CollectionViewComponents;
 			sourceTree = "<group>";
@@ -302,12 +302,12 @@
 			files = (
 				FD55F2DE2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift in Sources */,
 				FD55F2AD2A0DBC370067E0D4 /* KETIViewController.swift in Sources */,
+				FDF3FD582A14A94800F27371 /* NewsScrollView.swift in Sources */,
 				FD55F2A92A0DBC370067E0D4 /* AppDelegate.swift in Sources */,
 				FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */,
 				FD55F2E02A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift in Sources */,
-				FD55F2E92A0E082B0067E0D4 /* NormalState.swift in Sources */,
+				FD55F2E92A0E082B0067E0D4 /* EarthquakeState.swift in Sources */,
 				FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */,
-				FD55F2E72A0E07FE0067E0D4 /* WhileEarthquake.swift in Sources */,
 				FD55F2DC2A0DFDB20067E0D4 /* EarthquakeCollectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

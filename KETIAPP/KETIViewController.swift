@@ -12,27 +12,33 @@ class KETIViewController: UIViewController {
     let detect = Detect.sharedDetect()
     
     var earthQuake: Bool = false
-
-//  State View
+    
+    //  State View
     @IBOutlet weak var stateView: UIView!
     @IBOutlet weak var stateImageView: UIImageView!
     @IBOutlet weak var stateLabel: UILabel!
     
-//  Location View
+    //  Location View
     @IBOutlet weak var locationView: UIView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var currentLocationLabel: UILabel!
     @IBOutlet weak var W3WLabel: UILabel!
     
-//  Compositional Layout components
-    enum Section {
-        case one2one
-        case one2two
-    }
-//    typealias Item = 
+    // Views
+    @IBOutlet weak var magnitudeView: UIView!
+    @IBOutlet weak var intensityView: UIView!
+    @IBOutlet weak var actionView: UIView!
+    @IBOutlet weak var informationView: UIView!
     
-//  Colleciton View
-    @IBOutlet weak var earthquakeCollectionView: UICollectionView!
+    // View components
+    @IBOutlet weak var magnitudeLabel: UILabel!
+    @IBOutlet weak var magnitudeValue: UILabel!
+    @IBOutlet weak var intensityLabel: UILabel!
+    @IBOutlet weak var intensityValue: UILabel!
+    @IBOutlet weak var actionLabel: UILabel!
+    @IBOutlet weak var actionImageView: UIImageView!
+    @IBOutlet weak var informationLabel: UILabel!
+    @IBOutlet weak var informationImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +48,7 @@ class KETIViewController: UIViewController {
         hideStateLabelAndRevealStateImage()
     }
     
-//  Disappear stateLabel softly & Appear stateImageView softly
+    //  Disappear stateLabel softly & Appear stateImageView softly
     func hideStateLabelAndRevealStateImage() {
         self.stateImageView.alpha = 0
         
@@ -54,8 +60,10 @@ class KETIViewController: UIViewController {
         }
     }
     
-//  Check and change main view
+    //  Check and change main view
     func checkAndChangeMainView() {
+        viewSetting()
+        
         if earthQuake == true {
             earthquakeOccured()
         } else {
@@ -63,19 +71,55 @@ class KETIViewController: UIViewController {
         }
     }
     
-//  Normal state
+    //  Setting views
+    func viewSetting() {
+        let layerBorderColor: UIColor = BGColor()
+        
+        locationView.layer.borderWidth = 2
+        locationView.layer.borderColor = layerBorderColor.cgColor
+        locationView.layer.cornerRadius = 10
+        
+        magnitudeView.layer.borderWidth = 2
+        magnitudeView.layer.borderColor = layerBorderColor.cgColor
+        magnitudeView.layer.cornerRadius = 10
+        
+        intensityView.layer.borderWidth = 2
+        intensityView.layer.borderColor = layerBorderColor.cgColor
+        intensityView.layer.cornerRadius = 10
+        
+        actionView.layer.borderWidth = 2
+        actionView.layer.borderColor = layerBorderColor.cgColor
+        actionView.layer.cornerRadius = 10
+        
+        informationView.layer.borderWidth = 2
+        informationView.layer.borderColor = layerBorderColor.cgColor
+        informationView.layer.cornerRadius = 10
+    }
+    
+    //  Normal state
     func normalState() {
+        // StateView
         stateView.backgroundColor = .clear
         stateImageView.image = UIImage(named: "Safe")
         stateLabel.text = "안정 상태"
         
+        // LocationView
         locationView.backgroundColor = .clear
         locationLabel.text = "현재 위치"
         currentLocationLabel.text = "또 다른 함수"
         W3WLabel.text = "또 다른 함수"
+        
+        // Views
+        magnitudeLabel.text = "규모"
+        magnitudeValue.text = "-"
+        intensityLabel.text = "진도"
+        intensityValue.text = "-"
+        actionLabel.text = "행동요령"
+        actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
     
-//  If earthquake occured
+    //  If earthquake occured
     func earthquakeOccured() {
         stateImageView.image = UIImage(named: "Siren")
         stateLabel.textColor = .red
@@ -86,26 +130,19 @@ class KETIViewController: UIViewController {
         W3WLabel.text = "또 다른 함수"
     }
     
-//  After earthquake
+    //  After earthquake
     func afterEarthquake() {
         
     }
     
-//  CompositionalLayout
-//  Diffable DataSource(Presentation), Snapshot(Data), Compotistion layout(Layout)
-    
-    func layout() -> UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        return layout
-        
+    // Check the backgroundColor
+    public func BGColor() -> UIColor {
+        let layerBorderColor: UIColor
+        if self.traitCollection.userInterfaceStyle == .dark {
+            layerBorderColor = .white
+        } else {
+            layerBorderColor = .black
+        }
+        return layerBorderColor
     }
 }
-
