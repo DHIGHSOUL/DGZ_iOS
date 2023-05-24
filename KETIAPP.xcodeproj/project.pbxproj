@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD1535822A15384E00EA766F /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1535812A15384E00EA766F /* ActionViewController.swift */; };
 		FD55F2A92A0DBC370067E0D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */; };
 		FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */; };
 		FD55F2AD2A0DBC370067E0D4 /* KETIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2AC2A0DBC370067E0D4 /* KETIViewController.swift */; };
@@ -16,11 +17,9 @@
 		FD55F2C02A0DBC370067E0D4 /* KETIAPPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2BF2A0DBC370067E0D4 /* KETIAPPTests.swift */; };
 		FD55F2CA2A0DBC370067E0D4 /* KETIAPPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2C92A0DBC370067E0D4 /* KETIAPPUITests.swift */; };
 		FD55F2CC2A0DBC370067E0D4 /* KETIAPPUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2CB2A0DBC370067E0D4 /* KETIAPPUITestsLaunchTests.swift */; };
-		FD55F2DC2A0DFDB20067E0D4 /* EarthquakeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2DB2A0DFDB20067E0D4 /* EarthquakeCollectionView.swift */; };
-		FD55F2DE2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2DD2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift */; };
-		FD55F2E02A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2DF2A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift */; };
 		FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E32A0DFF800067E0D4 /* Detect.swift */; };
 		FD55F2E92A0E082B0067E0D4 /* EarthquakeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */; };
+		FDA446942A1B05AB00C07DE3 /* actionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA446932A1B05AB00C07DE3 /* actionCell.swift */; };
 		FDF3FD582A14A94800F27371 /* NewsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF3FD572A14A94800F27371 /* NewsScrollView.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD1535812A15384E00EA766F /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
 		FD55F2A52A0DBC370067E0D4 /* KETIAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KETIAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,11 +55,9 @@
 		FD55F2C52A0DBC370067E0D4 /* KETIAPPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KETIAPPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD55F2C92A0DBC370067E0D4 /* KETIAPPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KETIAPPUITests.swift; sourceTree = "<group>"; };
 		FD55F2CB2A0DBC370067E0D4 /* KETIAPPUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KETIAPPUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		FD55F2DB2A0DFDB20067E0D4 /* EarthquakeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeCollectionView.swift; sourceTree = "<group>"; };
-		FD55F2DD2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeInfoCell1.swift; sourceTree = "<group>"; };
-		FD55F2DF2A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeInfoCell2.swift; sourceTree = "<group>"; };
 		FD55F2E32A0DFF800067E0D4 /* Detect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detect.swift; sourceTree = "<group>"; };
 		FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeState.swift; sourceTree = "<group>"; };
+		FDA446932A1B05AB00C07DE3 /* actionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actionCell.swift; sourceTree = "<group>"; };
 		FDF3FD572A14A94800F27371 /* NewsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,10 +112,10 @@
 				FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */,
 				FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */,
 				FD55F2AC2A0DBC370067E0D4 /* KETIViewController.swift */,
+				FD1535812A15384E00EA766F /* ActionViewController.swift */,
 				FDF3FD572A14A94800F27371 /* NewsScrollView.swift */,
 				FD55F2E52A0E07E40067E0D4 /* CollectionViewComponents */,
 				FD55F2E22A0DFF430067E0D4 /* DetectEarthquake */,
-				FD55F2E12A0DFF250067E0D4 /* EarthquakeCollectionView */,
 				FD55F2B12A0DBC370067E0D4 /* Assets.xcassets */,
 				FD55F2AE2A0DBC370067E0D4 /* Main.storyboard */,
 				FD55F2B32A0DBC370067E0D4 /* LaunchScreen.storyboard */,
@@ -143,16 +141,6 @@
 			path = KETIAPPUITests;
 			sourceTree = "<group>";
 		};
-		FD55F2E12A0DFF250067E0D4 /* EarthquakeCollectionView */ = {
-			isa = PBXGroup;
-			children = (
-				FD55F2DB2A0DFDB20067E0D4 /* EarthquakeCollectionView.swift */,
-				FD55F2DD2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift */,
-				FD55F2DF2A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift */,
-			);
-			path = EarthquakeCollectionView;
-			sourceTree = "<group>";
-		};
 		FD55F2E22A0DFF430067E0D4 /* DetectEarthquake */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */,
+				FDA446932A1B05AB00C07DE3 /* actionCell.swift */,
 			);
 			path = CollectionViewComponents;
 			sourceTree = "<group>";
@@ -300,15 +289,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD55F2DE2A0DFE700067E0D4 /* EarthquakeInfoCell1.swift in Sources */,
 				FD55F2AD2A0DBC370067E0D4 /* KETIViewController.swift in Sources */,
+				FDA446942A1B05AB00C07DE3 /* actionCell.swift in Sources */,
 				FDF3FD582A14A94800F27371 /* NewsScrollView.swift in Sources */,
 				FD55F2A92A0DBC370067E0D4 /* AppDelegate.swift in Sources */,
 				FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */,
-				FD55F2E02A0DFEAB0067E0D4 /* EarthquakeInfoCell2.swift in Sources */,
 				FD55F2E92A0E082B0067E0D4 /* EarthquakeState.swift in Sources */,
 				FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */,
-				FD55F2DC2A0DFDB20067E0D4 /* EarthquakeCollectionView.swift in Sources */,
+				FD1535822A15384E00EA766F /* ActionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

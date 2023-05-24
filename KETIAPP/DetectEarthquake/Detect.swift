@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct Location: Codable {
+    let lat: String
+    let lng: String
+}
+
 class Detect {
 //  Singletone
     private static let detect = Detect()
@@ -16,13 +21,13 @@ class Detect {
     
 //  Check earthquake status
     func checkEarthquakeStatus() {
-//        KETIViewController().earthQuake.toggle()
+        
     }
     
 //  TODO: Make getMagnitude method -
 //  Get magnitude of earthquake
-    func getMagnitude() {
-        
+    func getMagnitude(magnitude: Float) -> String {
+        return String(magnitude)
     }
     
 //  Make intensity string for intensityValue
