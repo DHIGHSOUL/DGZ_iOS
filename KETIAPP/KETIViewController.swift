@@ -393,7 +393,7 @@ class KETIViewController: UIViewController {
     
     func startCheckAfterEarthquake() {
         earthquakeFinishTimer.startEarthquakeFinishTimer()
-        earthquakeCheckTimer.controlClosure = { [weak self] state in
+        earthquakeFinishTimer.controlClosure = { [weak self] state in
             DispatchQueue.main.async {
                 self?.earthquake = .afterEarthquake
                 self?.checkAndChangeMainView()
