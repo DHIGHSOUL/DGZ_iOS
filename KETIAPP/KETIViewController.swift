@@ -402,6 +402,18 @@ class KETIViewController: UIViewController {
         }
     }
     
+    func openMapURLWithSafari() {
+        if let url = URL(string: "kakaomap://route?sp=36.77319581029296,126.93359085592283&ep=36.7700744789879,126.929143452652&by=FOOT") {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                print("Cannot open the URL. Kakaomap is not installed")
+            }
+        } else {
+            print("Invalid URL")
+        }
+    }
+    
     // MARK: - View Tab Handler
     // Animate stateView
     @objc func stateViewTappedHandler(sender: UITapGestureRecognizer) {
@@ -416,6 +428,7 @@ class KETIViewController: UIViewController {
     
     // Move to safari for show map and information
     @objc func informationViewTappedHandler(sender: UITapGestureRecognizer) {
+        openMapURLWithSafari()
     }
 }
 
