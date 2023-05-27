@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FD1535822A15384E00EA766F /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1535812A15384E00EA766F /* ActionViewController.swift */; };
+		FD2BF2E32A1F5A74003D1719 /* EarthquakeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2BF2E22A1F5A74003D1719 /* EarthquakeState.swift */; };
 		FD55F2A92A0DBC370067E0D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */; };
 		FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */; };
 		FD55F2AD2A0DBC370067E0D4 /* KETIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2AC2A0DBC370067E0D4 /* KETIViewController.swift */; };
@@ -18,10 +19,47 @@
 		FD55F2CA2A0DBC370067E0D4 /* KETIAPPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2C92A0DBC370067E0D4 /* KETIAPPUITests.swift */; };
 		FD55F2CC2A0DBC370067E0D4 /* KETIAPPUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2CB2A0DBC370067E0D4 /* KETIAPPUITestsLaunchTests.swift */; };
 		FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E32A0DFF800067E0D4 /* Detect.swift */; };
-		FD55F2E92A0E082B0067E0D4 /* EarthquakeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */; };
+		FD55F2E92A0E082B0067E0D4 /* EarthquakeStateStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2E82A0E082B0067E0D4 /* EarthquakeStateStruct.swift */; };
 		FDA446942A1B05AB00C07DE3 /* actionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA446932A1B05AB00C07DE3 /* actionCell.swift */; };
+		FDB21A5F2A1DF24E00E04DF8 /* SensorTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB21A5E2A1DF24E00E04DF8 /* SensorTimer.swift */; };
 		FDF3FD582A14A94800F27371 /* NewsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF3FD572A14A94800F27371 /* NewsScrollView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FD29C4E52A20DACE008C94CD /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = text.plist.stringsdict;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# builtin-copyStrings\n";
+		};
+		FD29C4E62A20DB4F008C94CD /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = text.plist.strings;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# builtin-copyStrings\n";
+		};
+		FD29C4E72A20DB5A008C94CD /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = text.plist.strings;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "# builtin-copyStrings\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		FD55F2BC2A0DBC370067E0D4 /* PBXContainerItemProxy */ = {
@@ -42,6 +80,7 @@
 
 /* Begin PBXFileReference section */
 		FD1535812A15384E00EA766F /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
+		FD2BF2E22A1F5A74003D1719 /* EarthquakeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeState.swift; sourceTree = "<group>"; };
 		FD55F2A52A0DBC370067E0D4 /* KETIAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KETIAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,8 +95,9 @@
 		FD55F2C92A0DBC370067E0D4 /* KETIAPPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KETIAPPUITests.swift; sourceTree = "<group>"; };
 		FD55F2CB2A0DBC370067E0D4 /* KETIAPPUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KETIAPPUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FD55F2E32A0DFF800067E0D4 /* Detect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detect.swift; sourceTree = "<group>"; };
-		FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeState.swift; sourceTree = "<group>"; };
+		FD55F2E82A0E082B0067E0D4 /* EarthquakeStateStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeStateStruct.swift; sourceTree = "<group>"; };
 		FDA446932A1B05AB00C07DE3 /* actionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actionCell.swift; sourceTree = "<group>"; };
+		FDB21A5E2A1DF24E00E04DF8 /* SensorTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorTimer.swift; sourceTree = "<group>"; };
 		FDF3FD572A14A94800F27371 /* NewsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,7 +157,6 @@
 				FD55F2E52A0E07E40067E0D4 /* CollectionViewComponents */,
 				FD55F2E22A0DFF430067E0D4 /* DetectEarthquake */,
 				FD55F2B12A0DBC370067E0D4 /* Assets.xcassets */,
-				FD55F2AE2A0DBC370067E0D4 /* Main.storyboard */,
 				FD55F2B32A0DBC370067E0D4 /* LaunchScreen.storyboard */,
 				FD55F2B62A0DBC370067E0D4 /* Info.plist */,
 			);
@@ -145,6 +184,9 @@
 			isa = PBXGroup;
 			children = (
 				FD55F2E32A0DFF800067E0D4 /* Detect.swift */,
+				FDB21A5E2A1DF24E00E04DF8 /* SensorTimer.swift */,
+				FD55F2AE2A0DBC370067E0D4 /* Main.storyboard */,
+				FD2BF2E22A1F5A74003D1719 /* EarthquakeState.swift */,
 			);
 			path = DetectEarthquake;
 			sourceTree = "<group>";
@@ -152,7 +194,7 @@
 		FD55F2E52A0E07E40067E0D4 /* CollectionViewComponents */ = {
 			isa = PBXGroup;
 			children = (
-				FD55F2E82A0E082B0067E0D4 /* EarthquakeState.swift */,
+				FD55F2E82A0E082B0067E0D4 /* EarthquakeStateStruct.swift */,
 				FDA446932A1B05AB00C07DE3 /* actionCell.swift */,
 			);
 			path = CollectionViewComponents;
@@ -170,6 +212,9 @@
 				FD55F2A32A0DBC360067E0D4 /* Resources */,
 			);
 			buildRules = (
+				FD29C4E72A20DB5A008C94CD /* PBXBuildRule */,
+				FD29C4E62A20DB4F008C94CD /* PBXBuildRule */,
+				FD29C4E52A20DACE008C94CD /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -291,11 +336,13 @@
 			files = (
 				FD55F2AD2A0DBC370067E0D4 /* KETIViewController.swift in Sources */,
 				FDA446942A1B05AB00C07DE3 /* actionCell.swift in Sources */,
+				FD2BF2E32A1F5A74003D1719 /* EarthquakeState.swift in Sources */,
 				FDF3FD582A14A94800F27371 /* NewsScrollView.swift in Sources */,
 				FD55F2A92A0DBC370067E0D4 /* AppDelegate.swift in Sources */,
 				FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */,
-				FD55F2E92A0E082B0067E0D4 /* EarthquakeState.swift in Sources */,
+				FD55F2E92A0E082B0067E0D4 /* EarthquakeStateStruct.swift in Sources */,
 				FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */,
+				FDB21A5F2A1DF24E00E04DF8 /* SensorTimer.swift in Sources */,
 				FD1535822A15384E00EA766F /* ActionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

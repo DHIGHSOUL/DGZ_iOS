@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct EarthquakeState {
+public struct EarthquakeStateStruct {
     let magnitude: String
     let magnitudeValue: Float
     let intensity: String
     let intensityValue: String
 }
 
-extension EarthquakeState {
-    static let normalState = EarthquakeState(magnitude: "규모", magnitudeValue: 0.0, intensity: "진도", intensityValue: "-")
+extension EarthquakeStateStruct {
+    static let normalState = EarthquakeStateStruct(magnitude: "규모", magnitudeValue: 0.0, intensity: "진도", intensityValue: "-")
 }

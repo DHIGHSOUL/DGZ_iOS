@@ -10,21 +10,26 @@ import WebKit
 import CoreLocation
 
 class KETIViewController: UIViewController {
+    // KETIViewController singletone
+    private static let ketiViewController = KETIViewController()
+    public static func sharedKETIViewController() -> KETIViewController {
+        return KETIViewController()
+    }
+    
     // 'Detect' class singletone
     let detect = Detect.sharedDetect()
+    
+    // let detect = Detect.sharedDetect()
     var layerBorderColor: UIColor!
     
-    public enum EarthquakeState {
-        case normalState
-        case whileEarthquake
-        case afterEarthquake
-    }
+    // Timer for get sensor data every 1 sec
+    let sensorTimer = MyTimer()
     
     // webView for showing kakaomap
     var kakaoMapView: WKWebView!
     
     // Earthquake state -> Manage whole application functions
-    public var earthquake: EarthquakeState = .afterEarthquake
+    public var earthquake: EarthquakeState = .normalState
     
     // Dispath group for set location informations
     let setDispathGroup = DispatchGroup()
@@ -71,7 +76,7 @@ class KETIViewController: UIViewController {
         let actionTappedGesture = UITapGestureRecognizer(target: self, action: #selector(actionViewTappedHandler(sender:)))
         let informationTappedGesture = UITapGestureRecognizer(target: self, action: #selector(informationViewTappedHandler(sender:)))
         
-        detect.checkEarthquakeStatus()
+//        detect.checkEarthquakeStatus()
         layerBorderColor = BGColor()
         
         hideStateLabelAndRevealStateImage()
@@ -82,6 +87,15 @@ class KETIViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Start 'GET' sensor data
+        sensorTimer.startTimer()
+        sensorTimer.controlClosure = { [weak self] state in
+            DispatchQueue.main.async {
+                self?.earthquake = .whileEarthquake
+                self?.checkAndChangeMainView()
+            }
+        }
+        
         setLocationInformation()
         checkAndChangeMainView()
         if earthquake == .afterEarthquake {
@@ -114,6 +128,8 @@ class KETIViewController: UIViewController {
         } else if earthquake == .normalState {
             normalState()
         }
+        
+        softAnimation()
     }
     
     // Setting views
@@ -138,6 +154,9 @@ class KETIViewController: UIViewController {
         informationView.layer.borderColor = layerBorderColor.cgColor
         informationView.layer.cornerRadius = 10
     }
+    
+    // Check earthquake state and change viewController
+    
     
     // MARK: - Set main view for each state(.normalState, .whileEarthquake, .afterEarthquake)
     // Normal state
@@ -178,13 +197,27 @@ class KETIViewController: UIViewController {
         currentLocationLabel.text = "또 다른 함수"
         W3WLabel.text = "또 다른 함수"
         
+        // Get magnitude and intensity information
+        let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
+        let magnitudeText = magnitudeInformation.0
+        let magnitudeColor = magnitudeInformation.1
+        
+        let intensityInformation = detect.setIntensityView(intensity: 3.4)
+        let intensityText = intensityInformation.0
+        let intensityColor = intensityInformation.1
+        
         // Views
+        magnitudeView.backgroundColor = magnitudeColor
         magnitudeLabel.text = "규모"
-        magnitudeValue.text = "-"
+        magnitudeValue.text = magnitudeText
+        
+        intensityView.backgroundColor = intensityColor
         intensityLabel.text = "예상진도"
-        intensityValue.text = "-"
+        intensityValue.text = intensityText
+        
         actionLabel.text = "행동요령"
         actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        
         informationLabel.text = "도달예정"
         informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
@@ -209,7 +242,7 @@ class KETIViewController: UIViewController {
         actionLabel.text = "행동요령"
         actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
         informationLabel.text = "대피장소"
-        //        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+                informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
     
     // Check the backgroundColor
@@ -242,14 +275,14 @@ class KETIViewController: UIViewController {
             print("")
             print("====================================")
             print("[requestPOST : http post 요청 성공]")
-            print("error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+            print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
             print("====================================")
             print("")
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
                 print("[requestPOST : http post 요청 에러]")
-                print("error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
                 return
@@ -313,7 +346,8 @@ class KETIViewController: UIViewController {
                     let longitudeString = String(optionalLongitudeString)
                     let longitudeDouble = Double(longitudeString)
                     self.longitudeDouble = longitudeDouble ?? -1.0
-                    print("latitudeDouble: \(latitudeDouble), longitude: \(longitudeDouble)")
+                    print("latitudeString: \(latitudeString), longitudeString: \(longitudeString)")
+                    print("latitudeDouble: \(String(describing: latitudeDouble)), longitudeDouble: \(String(describing: longitudeDouble))")
                 }
                 self.setDispathGroup.leave()
             }
@@ -324,9 +358,7 @@ class KETIViewController: UIViewController {
         }
     }
     
-    // MARK: - View Tab Handler
-    // Animate stateView
-    @objc func stateViewTappedHandler(sender: UITapGestureRecognizer) {
+    func softAnimation() {
         stateView.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.stateLabel.alpha = 1
@@ -342,6 +374,12 @@ class KETIViewController: UIViewController {
         }
     }
     
+    // MARK: - View Tab Handler
+    // Animate stateView
+    @objc func stateViewTappedHandler(sender: UITapGestureRecognizer) {
+        softAnimation()
+    }
+    
     // Move to other viewController to show action between and after earthquake
     @objc func actionViewTappedHandler(sender: UITapGestureRecognizer) {
         let actionViewController = ActionViewController()
@@ -350,9 +388,6 @@ class KETIViewController: UIViewController {
     
     // Move to safari for show map and information
     @objc func informationViewTappedHandler(sender: UITapGestureRecognizer) {
-        getLatAndLng { lat, lng in
-            print("Information lat: \(lat), Information lng: \(lng)")
-        }
     }
 }
 
