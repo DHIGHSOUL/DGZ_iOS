@@ -352,7 +352,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="actionCell" id="RP8-f6-f8N" customClass="actionCell" customModule="KETIAPP" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActionCollectionViewCell" id="RP8-f6-f8N" customClass="ActionCollectionViewCell" customModule="KETIAPP" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="393"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ibZ-Xs-pOo">
@@ -380,8 +380,8 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="393" height="393"/>
                                         <connections>
-                                            <outlet property="actionDescription" destination="f04-if-T4M" id="u3x-pS-Hwa"/>
-                                            <outlet property="actionImageView" destination="n2Z-tJ-OA2" id="b9w-ud-KwR"/>
+                                            <outlet property="actionDescription" destination="f04-if-T4M" id="2Yd-82-qcL"/>
+                                            <outlet property="actionImageView" destination="n2Z-tJ-OA2" id="147-oi-qdX"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -405,8 +405,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="actionCollectionView" destination="UIt-BC-VKu" id="nVf-D1-119"/>
-                        <outlet property="actionLabel" destination="mqe-1a-qgs" id="BdH-9w-xKQ"/>
+                        <outlet property="actionCollectionView" destination="RP8-f6-f8N" id="hlZ-bG-o0o"/>
+                        <outlet property="actionLabel" destination="mqe-1a-qgs" id="caH-Ut-v28"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H0b-gc-B9V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
