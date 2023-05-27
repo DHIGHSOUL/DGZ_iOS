@@ -112,7 +112,7 @@ class MyTimer {
                 let con = jsonObject?["con"] as? String
                 let earthquakeDetect: String = con ?? "N/A"
                 if earthquakeDetect == "2" {
-                    print("Earthquake occured, change .afterEarthquake")
+                    print("Earthquake finished, change .afterEarthquake")
                     self.controlClosure?(.afterEarthquake)
                     self.stopTimer()
                 }

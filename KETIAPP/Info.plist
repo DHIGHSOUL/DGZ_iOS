@@ -32,5 +32,9 @@
         <key>NSAllowsArbitraryLoadsInWebContent</key>
         <true/>
     </dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>kakaomap</string>
+    </array>
 </dict>
 </plist>
