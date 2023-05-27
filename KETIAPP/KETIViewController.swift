@@ -94,6 +94,7 @@ class KETIViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.earthquake = .whileEarthquake
                 self?.checkAndChangeMainView()
+                self?.startCheckAfterEarthquake()
             }
         }
         
@@ -235,15 +236,29 @@ class KETIViewController: UIViewController {
         currentLocationLabel.text = "또 다른 함수"
         W3WLabel.text = "또 다른 함수"
         
+        // Get magnitude and intensity information
+        let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
+        let magnitudeText = magnitudeInformation.0
+        let magnitudeColor = magnitudeInformation.1
+        
+        let intensityInformation = detect.setIntensityView(intensity: 2.9)
+        let intensityText = intensityInformation.0
+        let intensityColor = intensityInformation.1
+        
         // Views
+        magnitudeView.backgroundColor = magnitudeColor
         magnitudeLabel.text = "최종규모"
-        magnitudeValue.text = "-"
+        magnitudeValue.text = magnitudeText
+        
+        intensityView.backgroundColor = intensityColor
         intensityLabel.text = "최종진도"
-        intensityValue.text = "-"
+        intensityValue.text = intensityText
+        
         actionLabel.text = "행동요령"
         actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        
         informationLabel.text = "대피장소"
-                informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
     
     // Check the backgroundColor
@@ -375,10 +390,10 @@ class KETIViewController: UIViewController {
     }
     
     func startCheckAfterEarthquake() {
-        earthquakeFinishTimer.earthquakeFinishCheck()
+        earthquakeFinishTimer.startEarthquakeFinishTimer()
         earthquakeCheckTimer.controlClosure = { [weak self] state in
             DispatchQueue.main.async {
-                self?.earthquake = .whileEarthquake
+                self?.earthquake = .afterEarthquake
                 self?.checkAndChangeMainView()
                 if self?.earthquake == .afterEarthquake {
                     self?.loadKakaomapIfAfterEarthquake()

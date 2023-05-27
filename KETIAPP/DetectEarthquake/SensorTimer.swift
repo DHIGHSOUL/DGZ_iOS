@@ -17,6 +17,10 @@ class MyTimer {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(earthquakeCheck), userInfo: nil, repeats: true)
     }
     
+    func startEarthquakeFinishTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(earthquakeFinishCheck), userInfo: nil, repeats: true)
+    }
+    
     func stopTimer() {
         timer?.invalidate()
         timer = nil
@@ -108,7 +112,7 @@ class MyTimer {
                 let con = jsonObject?["con"] as? String
                 let earthquakeDetect: String = con ?? "N/A"
                 if earthquakeDetect == "2" {
-                    print("Earthquake occured, change .whileEarthquake")
+                    print("Earthquake occured, change .afterEarthquake")
                     self.controlClosure?(.afterEarthquake)
                     self.stopTimer()
                 }
