@@ -72,6 +72,8 @@ class KETIViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Hello, World!")
+        
         // View Click Recognizer
         let stateTappedGesture = UITapGestureRecognizer(target: self, action: #selector(stateViewTappedHandler(sender:)))
         let actionTappedGesture = UITapGestureRecognizer(target: self, action: #selector(actionViewTappedHandler(sender:)))
