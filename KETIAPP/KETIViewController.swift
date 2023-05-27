@@ -23,7 +23,8 @@ class KETIViewController: UIViewController {
     var layerBorderColor: UIColor!
     
     // Timer for get sensor data every 1 sec
-    let sensorTimer = MyTimer()
+    let earthquakeCheckTimer = MyTimer()
+    let earthquakeFinishTimer = MyTimer()
     
     // webView for showing kakaomap
     var kakaoMapView: WKWebView!
@@ -88,8 +89,8 @@ class KETIViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Start 'GET' sensor data
-        sensorTimer.startTimer()
-        sensorTimer.controlClosure = { [weak self] state in
+        earthquakeCheckTimer.startEarthquakeCheckTimer()
+        earthquakeCheckTimer.controlClosure = { [weak self] state in
             DispatchQueue.main.async {
                 self?.earthquake = .whileEarthquake
                 self?.checkAndChangeMainView()
@@ -298,7 +299,6 @@ class KETIViewController: UIViewController {
                 
                 self.latitude = String(describing: lat)
                 self.longitude = String(describing: lng)
-                //                print("Completion lat: \(self.latitude), Completion lng: \(self.longitude)")
                 completion(String(describing: lat), String(describing: lng))
             } catch {
                 print("JSON Error occured")
@@ -370,6 +370,19 @@ class KETIViewController: UIViewController {
                 self.stateLabel.alpha = 0
                 self.stateImageView.alpha = 1
                 self.stateView.isUserInteractionEnabled = true
+            }
+        }
+    }
+    
+    func startCheckAfterEarthquake() {
+        earthquakeFinishTimer.earthquakeFinishCheck()
+        earthquakeCheckTimer.controlClosure = { [weak self] state in
+            DispatchQueue.main.async {
+                self?.earthquake = .whileEarthquake
+                self?.checkAndChangeMainView()
+                if self?.earthquake == .afterEarthquake {
+                    self?.loadKakaomapIfAfterEarthquake()
+                }
             }
         }
     }
