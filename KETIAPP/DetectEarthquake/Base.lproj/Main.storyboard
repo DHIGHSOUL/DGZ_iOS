@@ -405,7 +405,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="actionCollectionView" destination="RP8-f6-f8N" id="hlZ-bG-o0o"/>
+                        <outlet property="actionCollectionView" destination="UIt-BC-VKu" id="cnq-fs-Wj5"/>
                         <outlet property="actionLabel" destination="mqe-1a-qgs" id="caH-Ut-v28"/>
                     </connections>
                 </viewController>
