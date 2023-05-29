@@ -7,7 +7,7 @@
 
 import UIKit
 
-class actionCell: UICollectionViewCell {
+class ActionCell: UICollectionViewCell {
     @IBOutlet weak var actionImageView: UIImageView!
     @IBOutlet weak var actionDescription: UILabel!
     

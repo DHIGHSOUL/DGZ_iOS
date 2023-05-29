@@ -246,7 +246,7 @@ class KETIViewController: UIViewController {
         magnitudeValue.text = magnitudeText
         
         intensityView.backgroundColor = intensityColor
-        intensityLabel.text = "예상진도"
+        intensityLabel.text = "최대 예상진도"
         intensityValue.text = intensityText
         
         actionLabel.text = "행동요령"
@@ -299,7 +299,7 @@ class KETIViewController: UIViewController {
         actionLabel.text = "행동요령"
         actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
         
-        loadKakaomapIfAfterEarthquake()
+//        loadKakaomapIfAfterEarthquake()
         informationLabel.text = "대피장소"
         informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
@@ -492,32 +492,6 @@ class KETIViewController: UIViewController {
             task.resume()
     }
     
-//    func setLocationInformation() {
-//        if earthquake == .normalState {
-//            setDispathGroup.enter()
-//            getLatAndLng { lat, lng in
-//                let optionalLatitude: String? = lat
-//                let optionalLongitude: String? = lng
-//                
-//                if let optionalLatitudeString = optionalLatitude, let optionalLongitudeString = optionalLongitude {
-//                    let latitudeString = String(optionalLatitudeString)
-//                    let latitudeDouble = Double(latitudeString)
-//                    self.latitudeDouble = latitudeDouble ?? -1.0
-//                    let longitudeString = String(optionalLongitudeString)
-//                    let longitudeDouble = Double(longitudeString)
-//                    self.longitudeDouble = longitudeDouble ?? -1.0
-//                    print("latitudeString: \(latitudeString), longitudeString: \(longitudeString)")
-//                    print("latitudeDouble: \(String(describing: latitudeDouble)), longitudeDouble: \(String(describing: longitudeDouble))")
-//                }
-//                self.setDispathGroup.leave()
-//            }
-//            
-//            setDispathGroup.notify(queue: .main) {
-//                self.getAddress(latitude: self.latitudeDouble, longitude: self.longitudeDouble)
-//            }
-//        }
-//    }
-    
     func softAnimation() {
         stateView.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
@@ -540,9 +514,9 @@ class KETIViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.earthquake = .afterEarthquake
                 self?.checkAndChangeMainView()
-                if self?.earthquake == .afterEarthquake {
-                    self?.loadKakaomapIfAfterEarthquake()
-                }
+//                if self?.earthquake == .afterEarthquake {
+//                    self?.loadKakaomapIfAfterEarthquake()
+//                }
             }
         }
     }
@@ -579,46 +553,46 @@ class KETIViewController: UIViewController {
 
 // MARK: - Load web view for showing kakaomap with kakaoAPI
 extension KETIViewController: WKNavigationDelegate {
-    func loadKakaomapIfAfterEarthquake() {
-        let preferences = WKPreferences()
-        preferences.javaScriptCanOpenWindowsAutomatically = true
-        let configuration = WKWebViewConfiguration()
-        configuration.preferences = preferences
-        
-        self.informationLabel.removeFromSuperview()
-        self.informationImageView.removeFromSuperview()
-        kakaoMapView?.removeFromSuperview()
-        kakaoMapView = WKWebView(frame: informationView.bounds, configuration: configuration)
-        kakaoMapView.navigationDelegate = self
-        kakaoMapView.layer.borderWidth = 2
-        kakaoMapView.layer.borderColor = layerBorderColor.cgColor
-        kakaoMapView.layer.cornerRadius = 10
-        
-        self.informationView.addSubview(kakaoMapView)
-        
-        let kakaoMapsHTML = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <title>Kakao 지도 시작하기</title>
-            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=953e52838aa6fbc43c90bddf551dcbc7"></script>
-        </head>
-        <body>
-        <div id="map" style="width:100%;height:400px;"></div>
-        <script>
-        var container = document.getElementById('map');
-        var options = {
-            center: new kakao.maps.LatLng(37.50802, 127.062835),
-            level: 3
-        };
-        var map = new kakao.maps.Map(container, options);
-        </script>
-        </body>
-        </html>
-        """
-        kakaoMapView.loadHTMLString(kakaoMapsHTML, baseURL: URL(string: "http://dapi.kakao.com"))
-    }
+//    func loadKakaomapIfAfterEarthquake() {
+//        let preferences = WKPreferences()
+//        preferences.javaScriptCanOpenWindowsAutomatically = true
+//        let configuration = WKWebViewConfiguration()
+//        configuration.preferences = preferences
+//
+//        self.informationLabel.removeFromSuperview()
+//        self.informationImageView.removeFromSuperview()
+//        kakaoMapView?.removeFromSuperview()
+//        kakaoMapView = WKWebView(frame: informationView.bounds, configuration: configuration)
+//        kakaoMapView.navigationDelegate = self
+//        kakaoMapView.layer.borderWidth = 2
+//        kakaoMapView.layer.borderColor = layerBorderColor.cgColor
+//        kakaoMapView.layer.cornerRadius = 10
+//
+//        self.informationView.addSubview(kakaoMapView)
+//
+//        let kakaoMapsHTML = """
+//        <!DOCTYPE html>
+//        <html>
+//        <head>
+//            <meta charset="utf-8">
+//            <title>Kakao 지도 시작하기</title>
+//            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=953e52838aa6fbc43c90bddf551dcbc7"></script>
+//        </head>
+//        <body>
+//        <div id="map" style="width:100%;height:400px;"></div>
+//        <script>
+//        var container = document.getElementById('map');
+//        var options = {
+//            center: new kakao.maps.LatLng(37.50802, 127.062835),
+//            level: 3
+//        };
+//        var map = new kakao.maps.Map(container, options);
+//        </script>
+//        </body>
+//        </html>
+//        """
+//        kakaoMapView.loadHTMLString(kakaoMapsHTML, baseURL: URL(string: "http://dapi.kakao.com"))
+//    }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         print("Web content loading...")
