@@ -16,6 +16,10 @@ class KETIViewController: UIViewController {
         return KETIViewController()
     }
     
+    // Location manager for get currnet location(latitude and longitude)
+    let locationManager = CLLocationManager()
+    let geocoder = CLGeocoder()
+    
     // 'Detect' class singletone
     let detect = Detect.sharedDetect()
     
@@ -72,6 +76,10 @@ class KETIViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
         print("Hello, World!")
         
         // View Click Recognizer
@@ -79,7 +87,6 @@ class KETIViewController: UIViewController {
         let actionTappedGesture = UITapGestureRecognizer(target: self, action: #selector(actionViewTappedHandler(sender:)))
         let informationTappedGesture = UITapGestureRecognizer(target: self, action: #selector(informationViewTappedHandler(sender:)))
         
-//        detect.checkEarthquakeStatus()
         layerBorderColor = BGColor()
         
         hideStateLabelAndRevealStateImage()
@@ -90,21 +97,24 @@ class KETIViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Start 'GET' sensor data
-        earthquakeCheckTimer.startEarthquakeCheckTimer()
-        earthquakeCheckTimer.controlClosure = { [weak self] state in
-            DispatchQueue.main.async {
-                self?.earthquake = .whileEarthquake
-                self?.checkAndChangeMainView()
-                self?.startCheckAfterEarthquake()
+        
+        initializeState()
+        print("Current earthquake state = \(earthquake)")
+        
+        if earthquake == .normalState {
+            // Start 'GET' sensor data
+            earthquakeCheckTimer.startEarthquakeCheckTimer()
+            earthquakeCheckTimer.controlClosure = { [weak self] state in
+                DispatchQueue.main.async {
+                    self?.earthquake = .whileEarthquake
+                    self?.checkAndChangeMainView()
+                    self?.startCheckAfterEarthquake()
+                }
             }
         }
         
-        setLocationInformation()
+//        setLocationInformation()
         checkAndChangeMainView()
-        if earthquake == .afterEarthquake {
-            loadKakaomapIfAfterEarthquake()
-        }
     }
     
     // Disappear stateLabel softly & Appear stateImageView softly
@@ -174,9 +184,19 @@ class KETIViewController: UIViewController {
         locationView.backgroundColor = .clear
         locationLabel.text = "현재 위치"
         
-        setLocationInformation()
-        currentLocationLabel.text = locationAddress
-        W3WLabel.text = "또 다른 함수"
+//        setLocationInformation()
+        getAddress(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] address in
+            DispatchQueue.main.async {
+                self?.currentLocationLabel.text = address
+            }
+        }
+        
+        W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
+//        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+//            DispatchQueue.main.async {
+//                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+//            }
+//        }
         
         // Views
         magnitudeLabel.text = "규모"
@@ -197,9 +217,19 @@ class KETIViewController: UIViewController {
         stateLabel.text = "지진 발생!"
         
         // LocationView
-        locationLabel.text = "지진 발생 위치"
-        currentLocationLabel.text = "또 다른 함수"
-        W3WLabel.text = "또 다른 함수"
+        locationLabel.text = "현재 위치"
+        getAddress(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] address in
+            DispatchQueue.main.async {
+                self?.currentLocationLabel.text = address
+            }
+        }
+        
+        W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
+//        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+//            DispatchQueue.main.async {
+//                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+//            }
+//        }
         
         // Get magnitude and intensity information
         let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
@@ -234,9 +264,19 @@ class KETIViewController: UIViewController {
         stateLabel.text = "대피하세요!"
         
         // LocationView
-        locationLabel.text = "최단 대피경로 위치"
-        currentLocationLabel.text = "또 다른 함수"
-        W3WLabel.text = "또 다른 함수"
+        locationLabel.text = "현재 위치"
+        getAddress(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] address in
+            DispatchQueue.main.async {
+                self?.currentLocationLabel.text = address
+            }
+        }
+        
+        W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
+//        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+//            DispatchQueue.main.async {
+//                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+//            }
+//        }
         
         // Get magnitude and intensity information
         let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
@@ -259,6 +299,7 @@ class KETIViewController: UIViewController {
         actionLabel.text = "행동요령"
         actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
         
+        loadKakaomapIfAfterEarthquake()
         informationLabel.text = "대피장소"
         informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
@@ -272,6 +313,70 @@ class KETIViewController: UIViewController {
             layerBorderColor = .black
         }
         return layerBorderColor
+    }
+    
+    func startGetCoordinates() {
+        if CLLocationManager.locationServicesEnabled() {
+            print("Location service on, start to get location coordinates")
+            locationManager.startUpdatingLocation()
+        } else {
+            print("Location service off. Cannot get coordinates")
+        }
+    }
+    
+    // First initialization to set views
+    func initializeState() {
+        var request = URLRequest(url: URL(string: "http://203.253.128.177:7579/Mobius/KETIDGZ/earthquake/latest")!,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("12345", forHTTPHeaderField: "X-M2M-RI")
+        request.addValue("SOrigin", forHTTPHeaderField: "X-M2M-Origin")
+        
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else {
+                print("Cannot GET data")
+                return
+            }
+            
+            let successRange = 200..<300
+            print("")
+            print("====================================")
+            print("[requestPOST : http post 요청 성공]")
+            print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+            print("====================================")
+            print("")
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+                print("")
+                print("====================================")
+                print("[requestPOST : http post 요청 에러]")
+                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+                print("====================================")
+                print("")
+                return
+            }
+            
+            do {
+                let jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]
+                let jsonObject = jsonData?["m2m:cin"] as? [String:Any]
+                let con = jsonObject?["con"] as? String
+                let earthquakeDetect: String = con ?? "N/A"
+                if earthquakeDetect == "0" {
+                    self.earthquake = .normalState
+                    print("Initialization result = normalState")
+                } else if earthquakeDetect == "1" {
+                    self.earthquake = .whileEarthquake
+                    print("Initialization result = whileEarthquake")
+                } else if earthquakeDetect == "2" {
+                    self.earthquake = .afterEarthquake
+                    print("Initialization result = afterEarthquake")
+                }
+                print(earthquakeDetect)
+            } catch {
+                print("JSON Error occured")
+            }
+        }
+        task.resume()
     }
     
     // Get latitide and longitude from Mobius server
@@ -326,7 +431,7 @@ class KETIViewController: UIViewController {
     
     // TODO: - Get address from latitude and longitude
     // TODO: - Get W3W from latitude and longitude
-    func getAddress(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    func getAddress(latitude: CLLocationDegrees, longitude: CLLocationDegrees, completion: @escaping(String?) -> ()) {
         let geocoder = CLGeocoder()
         let location = CLLocation(latitude: latitude, longitude: longitude)
         
@@ -339,41 +444,79 @@ class KETIViewController: UIViewController {
             }
             
             if let placemark = placemarks?.first {
-                let address = "\(String(describing: placemark.administrativeArea))"
-                self.locationAddress = address
-                print(address)
-                self.currentLocationLabel.text = address
+                let addressArr = [ placemark.country, placemark.administrativeArea, placemark.thoroughfare, placemark.subThoroughfare ].compactMap { $0 }
+                let address = addressArr.joined(separator: ", ")
+                completion(address)
             } else {
                 print("No placemark found.")
             }
         }
     }
     
-    func setLocationInformation() {
-        if earthquake == .normalState {
-            setDispathGroup.enter()
-            getLatAndLng { lat, lng in
-                let optionalLatitude: String? = lat
-                let optionalLongitude: String? = lng
-                
-                if let optionalLatitudeString = optionalLatitude, let optionalLongitudeString = optionalLongitude {
-                    let latitudeString = String(optionalLatitudeString)
-                    let latitudeDouble = Double(latitudeString)
-                    self.latitudeDouble = latitudeDouble ?? -1.0
-                    let longitudeString = String(optionalLongitudeString)
-                    let longitudeDouble = Double(longitudeString)
-                    self.longitudeDouble = longitudeDouble ?? -1.0
-                    print("latitudeString: \(latitudeString), longitudeString: \(longitudeString)")
-                    print("latitudeDouble: \(String(describing: latitudeDouble)), longitudeDouble: \(String(describing: longitudeDouble))")
-                }
-                self.setDispathGroup.leave()
+    func getW3W(latitude: Double, longitude: Double, completion: @escaping (String?) -> ()) {
+        let urlString = "https://api.what3words.com/v3/convert-to-3wa?coordinates=\(latitude)%2C\(longitude)&key=HH2N0UPZ"
+        
+        guard let url = URL(string: urlString) else {
+                print("Invalid URL")
+                completion(nil)
+                return
             }
             
-            setDispathGroup.notify(queue: .main) {
-                self.getAddress(latitude: self.latitudeDouble, longitude: self.longitudeDouble)
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    print("Failed to get data from URL: \(error)")
+                    completion(nil)
+                    return
+                }
+                
+                guard let data = data else {
+                    print("No data returned from URL")
+                    completion(nil)
+                    return
+                }
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    if let dictionary = json as? [String:Any], let words = dictionary["words"] as? String {
+                        completion(words)
+                    } else {
+                        print("JSON is not a dictionary or 'words' not a string")
+                        completion(nil)
+                    }
+                } catch let error {
+                    print("Failed to parse JSON: \(error)")
+                    completion(nil)
+                }
             }
-        }
+            
+            task.resume()
     }
+    
+//    func setLocationInformation() {
+//        if earthquake == .normalState {
+//            setDispathGroup.enter()
+//            getLatAndLng { lat, lng in
+//                let optionalLatitude: String? = lat
+//                let optionalLongitude: String? = lng
+//                
+//                if let optionalLatitudeString = optionalLatitude, let optionalLongitudeString = optionalLongitude {
+//                    let latitudeString = String(optionalLatitudeString)
+//                    let latitudeDouble = Double(latitudeString)
+//                    self.latitudeDouble = latitudeDouble ?? -1.0
+//                    let longitudeString = String(optionalLongitudeString)
+//                    let longitudeDouble = Double(longitudeString)
+//                    self.longitudeDouble = longitudeDouble ?? -1.0
+//                    print("latitudeString: \(latitudeString), longitudeString: \(longitudeString)")
+//                    print("latitudeDouble: \(String(describing: latitudeDouble)), longitudeDouble: \(String(describing: longitudeDouble))")
+//                }
+//                self.setDispathGroup.leave()
+//            }
+//            
+//            setDispathGroup.notify(queue: .main) {
+//                self.getAddress(latitude: self.latitudeDouble, longitude: self.longitudeDouble)
+//            }
+//        }
+//    }
     
     func softAnimation() {
         stateView.isUserInteractionEnabled = false
@@ -393,7 +536,7 @@ class KETIViewController: UIViewController {
     
     func startCheckAfterEarthquake() {
         earthquakeFinishTimer.startEarthquakeFinishTimer()
-        earthquakeCheckTimer.controlClosure = { [weak self] state in
+        earthquakeFinishTimer.controlClosure = { [weak self] state in
             DispatchQueue.main.async {
                 self?.earthquake = .afterEarthquake
                 self?.checkAndChangeMainView()
@@ -487,5 +630,33 @@ extension KETIViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Web content load fail\nError code: \(error)")
+    }
+}
+
+extension KETIViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Get location as latitude and longitude")
+        if let location = locations.first {
+            print("Latitude : \(location.coordinate.latitude)")
+            self.latitudeDouble = location.coordinate.latitude
+            print("Longitude : \(location.coordinate.longitude)")
+            self.longitudeDouble = location.coordinate.longitude
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location get error : \(error)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted, .notDetermined:
+            print("Location access not granted!")
+            locationManager.requestWhenInUseAuthorization()
+        @unknown default:
+            print("Fatal error : Location manager")
+        }
     }
 }

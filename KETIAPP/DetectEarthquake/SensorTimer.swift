@@ -14,6 +14,7 @@ class MyTimer {
     var controlClosure: ((EarthquakeState) -> Void)?
     
     func startEarthquakeCheckTimer() {
+        
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(earthquakeCheck), userInfo: nil, repeats: true)
     }
     
@@ -65,6 +66,10 @@ class MyTimer {
                 if earthquakeDetect == "1" {
                     print("Earthquake occured, change .whileEarthquake")
                     self.controlClosure?(.whileEarthquake)
+                    self.stopTimer()
+                } else if earthquakeDetect == "2" {
+                    print("Earthquake finished, timer invalidate")
+                    self.controlClosure?(.afterEarthquake)
                     self.stopTimer()
                 }
                 print(earthquakeDetect)
