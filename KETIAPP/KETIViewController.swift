@@ -113,7 +113,7 @@ class KETIViewController: UIViewController {
             }
         }
         
-//        setLocationInformation()
+        //        setLocationInformation()
         checkAndChangeMainView()
     }
     
@@ -184,7 +184,7 @@ class KETIViewController: UIViewController {
         locationView.backgroundColor = .clear
         locationLabel.text = "현재 위치"
         
-//        setLocationInformation()
+        //        setLocationInformation()
         getAddress(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] address in
             DispatchQueue.main.async {
                 self?.currentLocationLabel.text = address
@@ -192,11 +192,11 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-//        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
-//            DispatchQueue.main.async {
-//                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
-//            }
-//        }
+        //        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+        //            DispatchQueue.main.async {
+        //                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+        //            }
+        //        }
         
         // Views
         magnitudeLabel.text = "규모"
@@ -225,11 +225,11 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-//        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
-//            DispatchQueue.main.async {
-//                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
-//            }
-//        }
+        //        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+        //            DispatchQueue.main.async {
+        //                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+        //            }
+        //        }
         
         // Get magnitude and intensity information
         let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
@@ -272,11 +272,11 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-//        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
-//            DispatchQueue.main.async {
-//                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
-//            }
-//        }
+        //        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+        //            DispatchQueue.main.async {
+        //                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+        //            }
+        //        }
         
         // Get magnitude and intensity information
         let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
@@ -299,7 +299,7 @@ class KETIViewController: UIViewController {
         actionLabel.text = "행동요령"
         actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
         
-//        loadKakaomapIfAfterEarthquake()
+        //        loadKakaomapIfAfterEarthquake()
         informationLabel.text = "대피장소"
         informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
     }
@@ -457,39 +457,39 @@ class KETIViewController: UIViewController {
         let urlString = "https://api.what3words.com/v3/convert-to-3wa?coordinates=\(latitude)%2C\(longitude)&key=HH2N0UPZ"
         
         guard let url = URL(string: urlString) else {
-                print("Invalid URL")
+            print("Invalid URL")
+            completion(nil)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Failed to get data from URL: \(error)")
                 completion(nil)
                 return
             }
             
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if let error = error {
-                    print("Failed to get data from URL: \(error)")
-                    completion(nil)
-                    return
-                }
-                
-                guard let data = data else {
-                    print("No data returned from URL")
-                    completion(nil)
-                    return
-                }
-                
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    if let dictionary = json as? [String:Any], let words = dictionary["words"] as? String {
-                        completion(words)
-                    } else {
-                        print("JSON is not a dictionary or 'words' not a string")
-                        completion(nil)
-                    }
-                } catch let error {
-                    print("Failed to parse JSON: \(error)")
-                    completion(nil)
-                }
+            guard let data = data else {
+                print("No data returned from URL")
+                completion(nil)
+                return
             }
             
-            task.resume()
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let dictionary = json as? [String:Any], let words = dictionary["words"] as? String {
+                    completion(words)
+                } else {
+                    print("JSON is not a dictionary or 'words' not a string")
+                    completion(nil)
+                }
+            } catch let error {
+                print("Failed to parse JSON: \(error)")
+                completion(nil)
+            }
+        }
+        
+        task.resume()
     }
     
     func softAnimation() {
@@ -514,23 +514,93 @@ class KETIViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.earthquake = .afterEarthquake
                 self?.checkAndChangeMainView()
-//                if self?.earthquake == .afterEarthquake {
-//                    self?.loadKakaomapIfAfterEarthquake()
-//                }
+                //                if self?.earthquake == .afterEarthquake {
+                //                    self?.loadKakaomapIfAfterEarthquake()
+                //                }
             }
         }
     }
     
     func openMapURLWithSafari() {
-        if let url = URL(string: "kakaomap://route?sp=36.77319581029296,126.93359085592283&ep=36.7700744789879,126.929143452652&by=FOOT") {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            } else {
-                print("Cannot open the URL. Kakaomap is not installed")
+        var request = URLRequest(url: URL(string: "http://203.253.128.177:7579/Mobius/KETIDGZ/mylocation/latest")!, timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("12345", forHTTPHeaderField: "X-M2M-RI")
+        request.addValue("SOrigin", forHTTPHeaderField: "X-M2M-Origin")
+        
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else {
+                print("Cannot GET data")
+                return
             }
-        } else {
-            print("Invalid URL")
+            
+            let successRange = 200..<300
+            print("")
+            print("====================================")
+            print("[Location requestPOST : http post 요청 성공]")
+            print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+            print("====================================")
+            print("")
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+                print("")
+                print("====================================")
+                print("[Location requestPOST : http post 요청 에러]")
+                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+                print("====================================")
+                print("")
+                return
+            }
+            
+            do {
+                let jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]
+                let jsonObject = jsonData!["m2m:cin"] as? [String:Any]
+                let con = jsonObject!["con"] as? String
+                let parts = con!.split(separator: "||")
+                let kakaoMapURLString = String(parts[0]).trimmingCharacters(in: .whitespacesAndNewlines)
+                let kakaoMapURL = URL(string: kakaoMapURLString)
+                let webMapURLString = String(parts[1]).trimmingCharacters(in: .whitespacesAndNewlines)
+                let webMapRUL = URL(string: webMapURLString)
+                
+                DispatchQueue.main.async {
+                    if let url = kakaoMapURL {
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        } else {
+                            if let webURL = webMapRUL {
+                                if UIApplication.shared.canOpenURL(webURL) {
+                                    UIApplication.shared.open(webURL, options: [:], completionHandler: nil)
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print("Fatal location get error")
+            }
         }
+        task.resume()
+        
+        //        if let url = URL(string: "kakaomap://route?sp=36.77319581029296,126.93359085592283&ep=36.7700744789879,126.929143452652&by=FOOT") {
+        //            if UIApplication.shared.canOpenURL(url) {
+        //                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        //            } else {
+        //                print("Cannot open the URL. Kakaomap is not installed")
+        //            }
+        //        } else {
+        //            print("Invalid URL")
+        //        }
+    }
+    
+    func checkKakaoMapExisted() -> Bool {
+        let kakaoMapScheme = "kakaomap:"
+        let kakaoMapURL = URL(string: kakaoMapScheme)
+        
+        if let kakaoMapURL = kakaoMapURL {
+            return UIApplication.shared.canOpenURL(kakaoMapURL)
+        }
+        
+        return false
     }
     
     // MARK: - View Tab Handler
@@ -553,46 +623,46 @@ class KETIViewController: UIViewController {
 
 // MARK: - Load web view for showing kakaomap with kakaoAPI
 extension KETIViewController: WKNavigationDelegate {
-//    func loadKakaomapIfAfterEarthquake() {
-//        let preferences = WKPreferences()
-//        preferences.javaScriptCanOpenWindowsAutomatically = true
-//        let configuration = WKWebViewConfiguration()
-//        configuration.preferences = preferences
-//
-//        self.informationLabel.removeFromSuperview()
-//        self.informationImageView.removeFromSuperview()
-//        kakaoMapView?.removeFromSuperview()
-//        kakaoMapView = WKWebView(frame: informationView.bounds, configuration: configuration)
-//        kakaoMapView.navigationDelegate = self
-//        kakaoMapView.layer.borderWidth = 2
-//        kakaoMapView.layer.borderColor = layerBorderColor.cgColor
-//        kakaoMapView.layer.cornerRadius = 10
-//
-//        self.informationView.addSubview(kakaoMapView)
-//
-//        let kakaoMapsHTML = """
-//        <!DOCTYPE html>
-//        <html>
-//        <head>
-//            <meta charset="utf-8">
-//            <title>Kakao 지도 시작하기</title>
-//            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=953e52838aa6fbc43c90bddf551dcbc7"></script>
-//        </head>
-//        <body>
-//        <div id="map" style="width:100%;height:400px;"></div>
-//        <script>
-//        var container = document.getElementById('map');
-//        var options = {
-//            center: new kakao.maps.LatLng(37.50802, 127.062835),
-//            level: 3
-//        };
-//        var map = new kakao.maps.Map(container, options);
-//        </script>
-//        </body>
-//        </html>
-//        """
-//        kakaoMapView.loadHTMLString(kakaoMapsHTML, baseURL: URL(string: "http://dapi.kakao.com"))
-//    }
+    //    func loadKakaomapIfAfterEarthquake() {
+    //        let preferences = WKPreferences()
+    //        preferences.javaScriptCanOpenWindowsAutomatically = true
+    //        let configuration = WKWebViewConfiguration()
+    //        configuration.preferences = preferences
+    //
+    //        self.informationLabel.removeFromSuperview()
+    //        self.informationImageView.removeFromSuperview()
+    //        kakaoMapView?.removeFromSuperview()
+    //        kakaoMapView = WKWebView(frame: informationView.bounds, configuration: configuration)
+    //        kakaoMapView.navigationDelegate = self
+    //        kakaoMapView.layer.borderWidth = 2
+    //        kakaoMapView.layer.borderColor = layerBorderColor.cgColor
+    //        kakaoMapView.layer.cornerRadius = 10
+    //
+    //        self.informationView.addSubview(kakaoMapView)
+    //
+    //        let kakaoMapsHTML = """
+    //        <!DOCTYPE html>
+    //        <html>
+    //        <head>
+    //            <meta charset="utf-8">
+    //            <title>Kakao 지도 시작하기</title>
+    //            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=953e52838aa6fbc43c90bddf551dcbc7"></script>
+    //        </head>
+    //        <body>
+    //        <div id="map" style="width:100%;height:400px;"></div>
+    //        <script>
+    //        var container = document.getElementById('map');
+    //        var options = {
+    //            center: new kakao.maps.LatLng(37.50802, 127.062835),
+    //            level: 3
+    //        };
+    //        var map = new kakao.maps.Map(container, options);
+    //        </script>
+    //        </body>
+    //        </html>
+    //        """
+    //        kakaoMapView.loadHTMLString(kakaoMapsHTML, baseURL: URL(string: "http://dapi.kakao.com"))
+    //    }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         print("Web content loading...")
