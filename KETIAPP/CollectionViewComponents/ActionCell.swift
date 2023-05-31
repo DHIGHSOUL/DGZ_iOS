@@ -9,6 +9,8 @@ import UIKit
 
 class ActionCell: UICollectionViewCell {
     @IBOutlet weak var actionImageView: UIImageView!
-    @IBOutlet weak var actionDescription: UILabel!
     
+    func configure(_ image: EarthquakeAction) {
+        actionImageView.image = UIImage(named: image.imageName)
+    }
 }

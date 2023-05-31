@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 import CoreLocation
+import FirebaseMessaging
 
 class KETIViewController: UIViewController {
     // KETIViewController singletone
@@ -38,6 +39,12 @@ class KETIViewController: UIViewController {
     
     // Dispath group for set location informations
     let setDispathGroup = DispatchGroup()
+    
+    // Change image to show current actions of situation
+    let normalStateActions: [EarthquakeAction] = EarthquakeAction.normalActionArray
+    var normalStateActionIndex: Int = 0
+    let afterStateActions: [EarthquakeAction] = EarthquakeAction.afterActionArray
+    var afterStateActionIndex: Int = 0
     
     // Global variables / Latitude, Longitude, and location
     public var latitude: String = ""
@@ -70,6 +77,7 @@ class KETIViewController: UIViewController {
     @IBOutlet weak var intensityValue: UILabel!
     @IBOutlet weak var actionLabel: UILabel!
     @IBOutlet weak var actionImageView: UIImageView!
+    @IBOutlet weak var actionDescription: UILabel!
     @IBOutlet weak var informationLabel: UILabel!
     @IBOutlet weak var informationImageView: UIImageView!
     
@@ -169,14 +177,13 @@ class KETIViewController: UIViewController {
         informationView.layer.cornerRadius = 10
     }
     
-    // Check earthquake state and change viewController
-    
     
     // MARK: - Set main view for each state(.normalState, .whileEarthquake, .afterEarthquake)
     // Normal state
     func normalState() {
         // StateView
         stateView.backgroundColor = .clear
+        stateLabel.textColor = layerBorderColor
         stateImageView.image = UIImage(named: "Safe")
         stateLabel.text = "안정 상태"
         
@@ -204,9 +211,10 @@ class KETIViewController: UIViewController {
         intensityLabel.text = "진도"
         intensityValue.text = "-"
         actionLabel.text = "행동요령"
-        actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        actionImageView.image = UIImage(named: normalStateActions[normalStateActionIndex].imageName)
+        actionDescription.text = normalStateActions[normalStateActionIndex].description
         informationLabel.text = "추가정보"
-        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
     }
     
     // If earthquake occured
@@ -250,10 +258,11 @@ class KETIViewController: UIViewController {
         intensityValue.text = intensityText
         
         actionLabel.text = "행동요령"
-        actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        actionImageView.image = UIImage(systemName: "safari.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
+        actionDescription.text = "클릭해주세요"
         
-        informationLabel.text = "도달예정"
-        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        informationLabel.text = "추가정보"
+        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
     }
     
     //  After earthquake
@@ -297,11 +306,12 @@ class KETIViewController: UIViewController {
         intensityValue.text = intensityText
         
         actionLabel.text = "행동요령"
-        actionImageView.image = UIImage(systemName: "globe.central.south.asia.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        actionImageView.image = UIImage(named: afterStateActions[afterStateActionIndex].imageName)
+        actionDescription.text = afterStateActions[afterStateActionIndex].description
         
         //        loadKakaomapIfAfterEarthquake()
         informationLabel.text = "대피장소"
-        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(BGColor())
+        informationImageView.image = UIImage(systemName: "signpost.right.and.left.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
     }
     
     // Check the backgroundColor
@@ -342,14 +352,14 @@ class KETIViewController: UIViewController {
             let successRange = 200..<300
             print("")
             print("====================================")
-            print("[requestPOST : http post 요청 성공]")
+            print("[requestGET : http get 요청 성공]")
             print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
             print("====================================")
             print("")
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
-                print("[requestPOST : http post 요청 에러]")
+                print("[requestGET : http get 요청 에러]")
                 print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
@@ -397,14 +407,14 @@ class KETIViewController: UIViewController {
             let successRange = 200..<300
             print("")
             print("====================================")
-            print("[requestPOST : http post 요청 성공]")
+            print("[requestGET : http get 요청 성공]")
             print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
             print("====================================")
             print("")
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
-                print("[requestPOST : http post 요청 에러]")
+                print("[requestGET : http get 요청 에러]")
                 print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
@@ -512,8 +522,13 @@ class KETIViewController: UIViewController {
         earthquakeFinishTimer.startEarthquakeFinishTimer()
         earthquakeFinishTimer.controlClosure = { [weak self] state in
             DispatchQueue.main.async {
-                self?.earthquake = .afterEarthquake
-                self?.checkAndChangeMainView()
+                if state == .normalState {
+                    self?.earthquake = .normalState
+                    self?.checkAndChangeMainView()
+                } else if state == .afterEarthquake {
+                    self?.earthquake = .afterEarthquake
+                    self?.checkAndChangeMainView()
+                }
                 //                if self?.earthquake == .afterEarthquake {
                 //                    self?.loadKakaomapIfAfterEarthquake()
                 //                }
@@ -538,14 +553,14 @@ class KETIViewController: UIViewController {
             let successRange = 200..<300
             print("")
             print("====================================")
-            print("[Location requestPOST : http post 요청 성공]")
+            print("[Location requestGET : http get 요청 성공]")
             print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
             print("====================================")
             print("")
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
-                print("[Location requestPOST : http post 요청 에러]")
+                print("[Location requestGET : http get 요청 에러]")
                 print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
@@ -558,19 +573,23 @@ class KETIViewController: UIViewController {
                 let con = jsonObject!["con"] as? String
                 let parts = con!.split(separator: "||")
                 let kakaoMapURLString = String(parts[0]).trimmingCharacters(in: .whitespacesAndNewlines)
-                let kakaoMapURL = URL(string: kakaoMapURLString)
                 let webMapURLString = String(parts[1]).trimmingCharacters(in: .whitespacesAndNewlines)
-                let webMapRUL = URL(string: webMapURLString)
+                
+//                print("kakaoMapURLString = \(kakaoMapURLString)")
+//                print("webMapURLString = \(webMapURLString)")
                 
                 DispatchQueue.main.async {
+                    let kakaoMapURL: URL? = URL(string: kakaoMapURLString)
+                    let webMapURL: URL? = URL(string: webMapURLString)
                     if let url = kakaoMapURL {
                         if UIApplication.shared.canOpenURL(url) {
                             UIApplication.shared.open(url, options: [:], completionHandler: nil)
                         } else {
-                            if let webURL = webMapRUL {
-                                if UIApplication.shared.canOpenURL(webURL) {
-                                    UIApplication.shared.open(webURL, options: [:], completionHandler: nil)
-                                }
+                            print("Cannot open kakaomap URL, Open map with web")
+                            if UIApplication.shared.canOpenURL(webMapURL!) {
+                                UIApplication.shared.open(webMapURL!, options: [:], completionHandler: nil)
+                            } else {
+                                print("Cannot open web map URL")
                             }
                         }
                     }
@@ -580,16 +599,41 @@ class KETIViewController: UIViewController {
             }
         }
         task.resume()
+    }
+    
+    func postMyLocation() {
+        let uploadLocationString = "\(latitudeDouble)||\(longitudeDouble)"
         
-        //        if let url = URL(string: "kakaomap://route?sp=36.77319581029296,126.93359085592283&ep=36.7700744789879,126.929143452652&by=FOOT") {
-        //            if UIApplication.shared.canOpenURL(url) {
-        //                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        //            } else {
-        //                print("Cannot open the URL. Kakaomap is not installed")
-        //            }
-        //        } else {
-        //            print("Invalid URL")
-        //        }
+        let parameters = "{\n    \"m2m:cin\": {\n        \"con\": \"\(uploadLocationString)\"\n    }\n}"
+        let postData = parameters.data(using: .utf8)
+        
+        var request = URLRequest(url: URL(string: "http://203.253.128.177:7579/Mobius/KETIDGZ/mylocation")!, timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("12345", forHTTPHeaderField: "X-M2M-RI")
+        request.addValue("Syr7TmQ-lQz", forHTTPHeaderField: "X-M2M-Origin")
+        request.addValue("application/vnd.onem2m-res+json; ty=4", forHTTPHeaderField: "Content-Type")
+        
+        request.httpMethod = "POST"
+        request.httpBody = postData
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard data != nil else {
+                print("Cannot POST data")
+                return
+            }
+            
+            let successRange = 200..<300
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+                print("")
+                print("====================================")
+                print("[Location requestPOST : http post 요청]")
+                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+                print("====================================")
+                print("")
+                return
+            }
+        }
+        task.resume()
     }
     
     func checkKakaoMapExisted() -> Bool {
@@ -603,6 +647,39 @@ class KETIViewController: UIViewController {
         return false
     }
     
+    func changeNormalStateActionView() {
+        if normalStateActionIndex != 0 && normalStateActionIndex % 2 == 0 {
+            normalStateActionIndex = 0
+        } else {
+            normalStateActionIndex += 1
+        }
+        actionImageView.image = UIImage(named: normalStateActions[normalStateActionIndex].imageName)?.withRenderingMode(.alwaysOriginal)
+        actionDescription.text = normalStateActions[normalStateActionIndex].description
+    }
+    
+    func changeWhileStateActionView() {
+        if let earthquakeURL = URL(string: "https://www.weather.go.kr/pews/man/m1.html#b2") {
+            if UIApplication.shared.canOpenURL(earthquakeURL) {
+                UIApplication.shared.open(earthquakeURL)
+            }
+        }
+    }
+    
+    func changeAfterStateActionView() {
+        if afterStateActionIndex != 0 && afterStateActionIndex % 2 == 0 {
+            afterStateActionIndex = 0
+        } else {
+            afterStateActionIndex += 1
+        }
+        actionImageView.image = UIImage(named: afterStateActions[afterStateActionIndex].imageName)?.withRenderingMode(.alwaysOriginal)
+        actionDescription.text = afterStateActions[afterStateActionIndex].description
+    }
+    
+    //    func openActionViewController() {
+    //        let actionViewController = ActionViewController()
+    //        navigationController?.pushViewController(actionViewController, animated: true)
+    //    }
+    
     // MARK: - View Tab Handler
     // Animate stateView
     @objc func stateViewTappedHandler(sender: UITapGestureRecognizer) {
@@ -611,59 +688,29 @@ class KETIViewController: UIViewController {
     
     // Move to other viewController to show action between and after earthquake
     @objc func actionViewTappedHandler(sender: UITapGestureRecognizer) {
-        let actionViewController = ActionViewController()
-        self.present(actionViewController, animated: true, completion: nil)
+        if earthquake == .normalState {
+            changeNormalStateActionView()
+        } else if earthquake == .whileEarthquake {
+            changeWhileStateActionView()
+        } else if earthquake == .afterEarthquake {
+            changeAfterStateActionView()
+        }
     }
     
     // Move to safari for show map and information
     @objc func informationViewTappedHandler(sender: UITapGestureRecognizer) {
-        openMapURLWithSafari()
+        if earthquake == .normalState {
+            postMyLocation()
+        } else if earthquake == .whileEarthquake {
+            
+        } else if earthquake == .afterEarthquake {
+            openMapURLWithSafari()
+        }
     }
 }
 
 // MARK: - Load web view for showing kakaomap with kakaoAPI
 extension KETIViewController: WKNavigationDelegate {
-    //    func loadKakaomapIfAfterEarthquake() {
-    //        let preferences = WKPreferences()
-    //        preferences.javaScriptCanOpenWindowsAutomatically = true
-    //        let configuration = WKWebViewConfiguration()
-    //        configuration.preferences = preferences
-    //
-    //        self.informationLabel.removeFromSuperview()
-    //        self.informationImageView.removeFromSuperview()
-    //        kakaoMapView?.removeFromSuperview()
-    //        kakaoMapView = WKWebView(frame: informationView.bounds, configuration: configuration)
-    //        kakaoMapView.navigationDelegate = self
-    //        kakaoMapView.layer.borderWidth = 2
-    //        kakaoMapView.layer.borderColor = layerBorderColor.cgColor
-    //        kakaoMapView.layer.cornerRadius = 10
-    //
-    //        self.informationView.addSubview(kakaoMapView)
-    //
-    //        let kakaoMapsHTML = """
-    //        <!DOCTYPE html>
-    //        <html>
-    //        <head>
-    //            <meta charset="utf-8">
-    //            <title>Kakao 지도 시작하기</title>
-    //            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=953e52838aa6fbc43c90bddf551dcbc7"></script>
-    //        </head>
-    //        <body>
-    //        <div id="map" style="width:100%;height:400px;"></div>
-    //        <script>
-    //        var container = document.getElementById('map');
-    //        var options = {
-    //            center: new kakao.maps.LatLng(37.50802, 127.062835),
-    //            level: 3
-    //        };
-    //        var map = new kakao.maps.Map(container, options);
-    //        </script>
-    //        </body>
-    //        </html>
-    //        """
-    //        kakaoMapView.loadHTMLString(kakaoMapsHTML, baseURL: URL(string: "http://dapi.kakao.com"))
-    //    }
-    
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         print("Web content loading...")
     }
