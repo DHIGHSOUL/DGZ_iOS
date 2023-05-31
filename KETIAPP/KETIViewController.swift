@@ -71,14 +71,22 @@ class KETIViewController: UIViewController {
     @IBOutlet weak var informationView: UIView!
     
     // View components
+    var applicationFirstOpen: Bool = true
+    
+    var magnitudeValue: Float = 0.0
     @IBOutlet weak var magnitudeLabel: UILabel!
-    @IBOutlet weak var magnitudeValue: UILabel!
+    @IBOutlet weak var magnitudeValueLabel: UILabel!
+    
+    var intensityValue: String = ""
     @IBOutlet weak var intensityLabel: UILabel!
-    @IBOutlet weak var intensityValue: UILabel!
+    @IBOutlet weak var intensityValueLabel: UILabel!
+    
     @IBOutlet weak var actionLabel: UILabel!
+    @IBOutlet weak var actionClickLabel: UILabel!
     @IBOutlet weak var actionImageView: UIImageView!
     @IBOutlet weak var actionDescription: UILabel!
     @IBOutlet weak var informationLabel: UILabel!
+    @IBOutlet weak var informationClickLabel: UILabel!
     @IBOutlet weak var informationImageView: UIImageView!
     
     // MARK: - View Life Cycle
@@ -108,18 +116,6 @@ class KETIViewController: UIViewController {
         
         initializeState()
         print("Current earthquake state = \(earthquake)")
-        
-        if earthquake == .normalState {
-            // Start 'GET' sensor data
-            earthquakeCheckTimer.startEarthquakeCheckTimer()
-            earthquakeCheckTimer.controlClosure = { [weak self] state in
-                DispatchQueue.main.async {
-                    self?.earthquake = .whileEarthquake
-                    self?.checkAndChangeMainView()
-                    self?.startCheckAfterEarthquake()
-                }
-            }
-        }
         
         //        setLocationInformation()
         checkAndChangeMainView()
@@ -181,6 +177,9 @@ class KETIViewController: UIViewController {
     // MARK: - Set main view for each state(.normalState, .whileEarthquake, .afterEarthquake)
     // Normal state
     func normalState() {
+        // Start 'GET' sensor data
+        startCheckEarthquake()
+        
         // StateView
         stateView.backgroundColor = .clear
         stateLabel.textColor = layerBorderColor
@@ -199,21 +198,21 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-        //        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
-        //            DispatchQueue.main.async {
-        //                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
-        //            }
-        //        }
+//        getW3W()
         
         // Views
+        magnitudeView.backgroundColor = .clear
         magnitudeLabel.text = "규모"
-        magnitudeValue.text = "-"
+        magnitudeValueLabel.text = "-"
+        intensityView.backgroundColor = .clear
         intensityLabel.text = "진도"
-        intensityValue.text = "-"
-        actionLabel.text = "행동요령"
+        intensityValueLabel.text = "-"
+        actionLabel.text = "대비요령"
+        actionClickLabel.text = "클릭하여 넘어가기"
         actionImageView.image = UIImage(named: normalStateActions[normalStateActionIndex].imageName)
         actionDescription.text = normalStateActions[normalStateActionIndex].description
         informationLabel.text = "추가정보"
+        informationClickLabel.text = "클릭하여 웹으로 이동"
         informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
     }
     
@@ -233,36 +232,41 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-        //        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
-        //            DispatchQueue.main.async {
-        //                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
-        //            }
-        //        }
+//        getW3W()
+        
         
         // Get magnitude and intensity information
-        let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
-        let magnitudeText = magnitudeInformation.0
-        let magnitudeColor = magnitudeInformation.1
-        
-        let intensityInformation = detect.setIntensityView(intensity: 3.4)
-        let intensityText = intensityInformation.0
-        let intensityColor = intensityInformation.1
-        
-        // Views
-        magnitudeView.backgroundColor = magnitudeColor
-        magnitudeLabel.text = "규모"
-        magnitudeValue.text = magnitudeText
-        
-        intensityView.backgroundColor = intensityColor
-        intensityLabel.text = "최대 예상진도"
-        intensityValue.text = intensityText
-        
-        actionLabel.text = "행동요령"
-        actionImageView.image = UIImage(systemName: "safari.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
-        actionDescription.text = "클릭해주세요"
-        
-        informationLabel.text = "추가정보"
-        informationImageView.image = UIImage(systemName: "info.bubble.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
+        detect.getMaxMagAndInt { arr in
+            DispatchQueue.main.async {
+                self.magnitudeValue = Float(arr[0]) ?? 0.0
+                self.intensityValue = arr[2]
+                let magnitudeInformation = self.detect.setMagnitudeView(magnitude: self.magnitudeValue)
+                let magnitudeText = magnitudeInformation.0
+                let magnitudeColor = magnitudeInformation.1
+                
+                let intensityInformation = self.detect.setIntensityView(intensity: self.intensityValue)
+                let intensityText = intensityInformation.0
+                let intensityColor = intensityInformation.1
+                
+                // Views
+                self.magnitudeView.backgroundColor = magnitudeColor
+                self.magnitudeLabel.text = "규모"
+                self.magnitudeValueLabel.text = magnitudeText
+                
+                self.intensityView.backgroundColor = intensityColor
+                self.intensityLabel.text = "최대 예상진도"
+                self.intensityValueLabel.text = intensityText
+                
+                self.actionLabel.text = "행동요령"
+                self.actionClickLabel.text = ""
+                self.actionImageView.image = UIImage(systemName: "safari.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.red.withAlphaComponent(0.75))
+                self.actionDescription.text = "클릭해주세요"
+                
+                self.informationLabel.text = ""
+                self.informationClickLabel.text = "행동요령 탭을 클릭해주세요"
+                self.informationImageView.image = UIImage(systemName: "arrow.backward")?.withRenderingMode(.alwaysOriginal).withTintColor(.red.withAlphaComponent(0.75))
+            }
+        }
     }
     
     //  After earthquake
@@ -281,37 +285,46 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-        //        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
-        //            DispatchQueue.main.async {
-        //                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
-        //            }
-        //        }
+//        getW3W()
         
         // Get magnitude and intensity information
-        let magnitudeInformation = detect.setMagnitudeView(magnitude: 4.5)
-        let magnitudeText = magnitudeInformation.0
-        let magnitudeColor = magnitudeInformation.1
-        
-        let intensityInformation = detect.setIntensityView(intensity: 2.9)
-        let intensityText = intensityInformation.0
-        let intensityColor = intensityInformation.1
-        
-        // Views
-        magnitudeView.backgroundColor = magnitudeColor
-        magnitudeLabel.text = "최종규모"
-        magnitudeValue.text = magnitudeText
-        
-        intensityView.backgroundColor = intensityColor
-        intensityLabel.text = "최종진도"
-        intensityValue.text = intensityText
-        
-        actionLabel.text = "행동요령"
-        actionImageView.image = UIImage(named: afterStateActions[afterStateActionIndex].imageName)
-        actionDescription.text = afterStateActions[afterStateActionIndex].description
-        
-        //        loadKakaomapIfAfterEarthquake()
-        informationLabel.text = "대피장소"
-        informationImageView.image = UIImage(systemName: "signpost.right.and.left.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(layerBorderColor)
+        detect.getMaxMagAndInt { arr in
+            DispatchQueue.main.async {
+                self.magnitudeValue = Float(arr[0]) ?? 0.0
+                self.intensityValue = arr[2]
+                
+                let magnitudeInformation = self.detect.setMagnitudeView(magnitude: self.magnitudeValue)
+                let magnitudeText = magnitudeInformation.0
+                let magnitudeColor = magnitudeInformation.1
+                
+                let intensityInformation = self.detect.setIntensityView(intensity: self.intensityValue)
+                let intensityText = intensityInformation.0
+                let intensityColor = intensityInformation.1
+                
+                // Views
+                self.magnitudeView.backgroundColor = magnitudeColor
+                self.magnitudeLabel.text = "최종규모"
+                self.magnitudeValueLabel.text = magnitudeText
+                
+                self.intensityView.backgroundColor = intensityColor
+                self.intensityLabel.text = "최종진도"
+                self.intensityValueLabel.text = intensityText
+                
+                self.actionLabel.text = "행동요령"
+                self.actionClickLabel.text = "클릭하여 넘어가기"
+                self.actionImageView.image = UIImage(named: self.afterStateActions[self.afterStateActionIndex].imageName)
+                self.actionDescription.text = self.afterStateActions[self.afterStateActionIndex].description
+                
+                // loadKakaomapIfAfterEarthquake()
+                self.informationLabel.text = "대피장소"
+                self.informationClickLabel.text = "클릭하여 웹으로 이동"
+                self.informationImageView.image = UIImage(systemName: "signpost.right.and.left.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(self.layerBorderColor)
+                
+                // Send my location information to Mobius platform
+                self.postMyLocation()
+
+            }
+        }
     }
     
     // Check the backgroundColor
@@ -518,6 +531,17 @@ class KETIViewController: UIViewController {
         }
     }
     
+    func startCheckEarthquake() {
+        earthquakeCheckTimer.startEarthquakeCheckTimer()
+        earthquakeCheckTimer.controlClosure = { [weak self] state in
+            DispatchQueue.main.async {
+                self?.earthquake = .whileEarthquake
+                self?.checkAndChangeMainView()
+                self?.startCheckAfterEarthquake()
+            }
+        }
+    }
+    
     func startCheckAfterEarthquake() {
         earthquakeFinishTimer.startEarthquakeFinishTimer()
         earthquakeFinishTimer.controlClosure = { [weak self] state in
@@ -529,15 +553,12 @@ class KETIViewController: UIViewController {
                     self?.earthquake = .afterEarthquake
                     self?.checkAndChangeMainView()
                 }
-                //                if self?.earthquake == .afterEarthquake {
-                //                    self?.loadKakaomapIfAfterEarthquake()
-                //                }
             }
         }
     }
     
     func openMapURLWithSafari() {
-        var request = URLRequest(url: URL(string: "http://203.253.128.177:7579/Mobius/KETIDGZ/mylocation/latest")!, timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "http://203.253.128.177:7579/Mobius/KETIDGZ/locationURL/latest")!, timeoutInterval: Double.infinity)
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("12345", forHTTPHeaderField: "X-M2M-RI")
         request.addValue("SOrigin", forHTTPHeaderField: "X-M2M-Origin")
@@ -575,7 +596,7 @@ class KETIViewController: UIViewController {
                 let kakaoMapURLString = String(parts[0]).trimmingCharacters(in: .whitespacesAndNewlines)
                 let webMapURLString = String(parts[1]).trimmingCharacters(in: .whitespacesAndNewlines)
                 
-//                print("kakaoMapURLString = \(kakaoMapURLString)")
+                print("kakaoMapURLString = \(kakaoMapURLString)")
 //                print("webMapURLString = \(webMapURLString)")
                 
                 DispatchQueue.main.async {
@@ -680,6 +701,22 @@ class KETIViewController: UIViewController {
     //        navigationController?.pushViewController(actionViewController, animated: true)
     //    }
     
+    func openAdditionalInformationNotion() {
+        if let notionURL = URL(string: "https://potent-barnacle-025.notion.site/689c9b6f4d3b4ebabc234ab52855f2ce") {
+            if UIApplication.shared.canOpenURL(notionURL) {
+                UIApplication.shared.open(notionURL)
+            }
+        }
+    }
+    
+    func getW3W() {
+        getW3W(latitude: latitudeDouble, longitude: longitudeDouble) { [weak self] W3W in
+            DispatchQueue.main.async {
+                self?.W3WLabel.text = W3W ?? "Invalid W3W Api Key || Overused"
+            }
+        }
+    }
+    
     // MARK: - View Tab Handler
     // Animate stateView
     @objc func stateViewTappedHandler(sender: UITapGestureRecognizer) {
@@ -700,9 +737,7 @@ class KETIViewController: UIViewController {
     // Move to safari for show map and information
     @objc func informationViewTappedHandler(sender: UITapGestureRecognizer) {
         if earthquake == .normalState {
-            postMyLocation()
-        } else if earthquake == .whileEarthquake {
-            
+            openAdditionalInformationNotion()
         } else if earthquake == .afterEarthquake {
             openMapURLWithSafari()
         }
