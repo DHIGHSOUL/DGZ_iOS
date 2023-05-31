@@ -8,10 +8,9 @@
 import UIKit
 import WebKit
 import CoreLocation
-import FirebaseMessaging
 
 class KETIViewController: UIViewController {
-    // KETIViewController singletone
+    //  Singletone
     private static let ketiViewController = KETIViewController()
     public static func sharedKETIViewController() -> KETIViewController {
         return KETIViewController()
@@ -21,10 +20,10 @@ class KETIViewController: UIViewController {
     let locationManager = CLLocationManager()
     let geocoder = CLGeocoder()
     
-    // 'Detect' class singletone
+    // Singletones
     let detect = Detect.sharedDetect()
+    let notficationManager = NotificationManager.sharedNotificationManager()
     
-    // let detect = Detect.sharedDetect()
     var layerBorderColor: UIColor!
     
     // Timer for get sensor data every 1 sec
@@ -93,8 +92,8 @@ class KETIViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
+        locationManagerSetting()
+        notficationManager.requestNotificationAuthorization()
         
         print("Hello, World!")
         
@@ -760,6 +759,14 @@ extension KETIViewController: WKNavigationDelegate {
 }
 
 extension KETIViewController: CLLocationManagerDelegate {
+    func locationManagerSetting() {
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManagerDidChangeAuthorization(locationManager)
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("Get location as latitude and longitude")
         if let location = locations.first {
@@ -772,6 +779,18 @@ extension KETIViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location get error : \(error)")
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if CLLocationManager.locationServicesEnabled() {
+            let authorizationStatus = CLLocationManager.authorizationStatus()
+            if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
+                print("위치 정보 읽기 시작")
+                locationManager.startUpdatingLocation()
+            } else {
+                print("위치 정보를 받아올 수 없음")
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

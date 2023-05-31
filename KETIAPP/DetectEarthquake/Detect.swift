@@ -56,7 +56,7 @@ class Detect {
                 let jsonObject = jsonData?["m2m:cin"] as? [String:Any]
                 let con = jsonObject?["con"] as? String
                 let earthquakeInformation: String = con ?? "N/A"
-                let informationArray: [String] = earthquakeInformation.split(separator: "@").map { String($0) }
+                let informationArray: [String] = earthquakeInformation.split(separator: "|").map { String($0) }
                 print("informationArray: \(informationArray)")
                 completion(informationArray)
             } catch {
@@ -84,7 +84,7 @@ class Detect {
         case "III":
             intensityColor = .systemGreen.withAlphaComponent(0.3)
         case "IV":
-            intensityColor = .systemYellow.withAlphaComponent(0.4) 
+            intensityColor = .systemYellow.withAlphaComponent(0.4)
         case "V":
             intensityColor = .systemOrange.withAlphaComponent(0.5)
         case "VI":

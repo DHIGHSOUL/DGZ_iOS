@@ -9,12 +9,12 @@ import Foundation
 
 class MyTimer {
     var timer: Timer?
+    let notificationManager = NotificationManager.sharedNotificationManager()
     
     // ViewController control closure
     var controlClosure: ((EarthquakeState) -> Void)?
     
     func startEarthquakeCheckTimer() {
-        
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(earthquakeCheck), userInfo: nil, repeats: true)
     }
     
@@ -66,6 +66,7 @@ class MyTimer {
                 if earthquakeDetect == "1" {
                     print("Earthquake occured, change .whileEarthquake")
                     self.controlClosure?(.whileEarthquake)
+                    self.notificationManager.setEarthquakeNotification()
                     self.stopTimer()
                 } else if earthquakeDetect == "2" {
                     print("Earthquake finished, timer invalidate")
