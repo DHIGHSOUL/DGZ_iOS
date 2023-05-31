@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FD10BC122A26F878007DAD3D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = FD10BC112A26F878007DAD3D /* FirebaseMessaging */; };
 		FD2BF2E32A1F5A74003D1719 /* EarthquakeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2BF2E22A1F5A74003D1719 /* EarthquakeState.swift */; };
+		FD3FD0792A2789E200FF18BB /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3FD0782A2789E200FF18BB /* NotificationManager.swift */; };
 		FD55F2A92A0DBC370067E0D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */; };
 		FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */; };
 		FD55F2AD2A0DBC370067E0D4 /* KETIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55F2AC2A0DBC370067E0D4 /* KETIViewController.swift */; };
@@ -78,6 +78,7 @@
 
 /* Begin PBXFileReference section */
 		FD2BF2E22A1F5A74003D1719 /* EarthquakeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeState.swift; sourceTree = "<group>"; };
+		FD3FD0782A2789E200FF18BB /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		FD55F2A52A0DBC370067E0D4 /* KETIAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KETIAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,7 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD10BC122A26F878007DAD3D /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +148,7 @@
 				FD55F2A82A0DBC370067E0D4 /* AppDelegate.swift */,
 				FD55F2AA2A0DBC370067E0D4 /* SceneDelegate.swift */,
 				FD55F2AC2A0DBC370067E0D4 /* KETIViewController.swift */,
+				FD3FD0782A2789E200FF18BB /* NotificationManager.swift */,
 				FD55F2AE2A0DBC370067E0D4 /* Main.storyboard */,
 				FD55F2B12A0DBC370067E0D4 /* Assets.xcassets */,
 				FD55F2B32A0DBC370067E0D4 /* LaunchScreen.storyboard */,
@@ -213,7 +214,6 @@
 			);
 			name = KETIAPP;
 			packageProductDependencies = (
-				FD10BC112A26F878007DAD3D /* FirebaseMessaging */,
 			);
 			productName = KETIAPP;
 			productReference = FD55F2A52A0DBC370067E0D4 /* KETIAPP.app */;
@@ -288,7 +288,6 @@
 			);
 			mainGroup = FD55F29C2A0DBC360067E0D4;
 			packageReferences = (
-				FD10BC102A26F878007DAD3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = FD55F2A62A0DBC370067E0D4 /* Products */;
 			projectDirPath = "";
@@ -339,6 +338,7 @@
 				FD55F2E42A0DFF800067E0D4 /* Detect.swift in Sources */,
 				FD55F2AB2A0DBC370067E0D4 /* SceneDelegate.swift in Sources */,
 				FDB21A5F2A1DF24E00E04DF8 /* SensorTimer.swift in Sources */,
+				FD3FD0792A2789E200FF18BB /* NotificationManager.swift in Sources */,
 				FD6930832A253FE500C49121 /* EarthquakeAction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,8 +523,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -555,8 +555,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -689,25 +689,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		FD10BC102A26F878007DAD3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		FD10BC112A26F878007DAD3D /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FD10BC102A26F878007DAD3D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FD55F29D2A0DBC360067E0D4 /* Project object */;
 }
