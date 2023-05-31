@@ -266,6 +266,11 @@ class KETIViewController: UIViewController {
                 self.informationImageView.image = UIImage(systemName: "arrow.backward")?.withRenderingMode(.alwaysOriginal).withTintColor(.red.withAlphaComponent(0.75))
             }
         }
+        
+        // Send my location information to Mobius platform
+        self.postMyLocationToMobius()
+        
+        startCheckAfterEarthquake()
     }
     
     //  After earthquake
@@ -318,10 +323,6 @@ class KETIViewController: UIViewController {
                 self.informationLabel.text = "대피장소"
                 self.informationClickLabel.text = "클릭하여 웹으로 이동"
                 self.informationImageView.image = UIImage(systemName: "signpost.right.and.left.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(self.layerBorderColor)
-                
-                // Send my location information to Mobius platform
-                self.postMyLocation()
-
             }
         }
     }
@@ -621,7 +622,7 @@ class KETIViewController: UIViewController {
         task.resume()
     }
     
-    func postMyLocation() {
+    func postMyLocationToMobius() {
         let uploadLocationString = "\(latitudeDouble)||\(longitudeDouble)"
         
         let parameters = "{\n    \"m2m:cin\": {\n        \"con\": \"\(uploadLocationString)\"\n    }\n}"
@@ -647,6 +648,30 @@ class KETIViewController: UIViewController {
                 print("")
                 print("====================================")
                 print("[Location requestPOST : http post 요청]")
+                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+                print("====================================")
+                print("")
+                return
+            }
+        }
+        task.resume()
+    }
+    
+    func postMyLocationToLocal() {
+        var request = URLRequest(url: URL(string: "http://192.168.0.253z:3000/earthquake/mylocation")!, timeoutInterval: Double.infinity)
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard data != nil else {
+                print("Cannot send GET signal")
+                return
+            }
+            
+            let successRange = 200..<300
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+                print("")
+                print("====================================")
+                print("[LocalServer requestGET : http get 요청]")
                 print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
