@@ -44,14 +44,14 @@ class MyTimer {
             let successRange = 200..<300
             print("")
             print("====================================")
-            print("[requestPOST : http post 요청 성공]")
+            print("[requestGET : http get 요청 성공]")
             print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
             print("====================================")
             print("")
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
-                print("[requestPOST : http post 요청 에러]")
+                print("[requestGET : http get 요청 에러]")
                 print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
@@ -97,14 +97,14 @@ class MyTimer {
             let successRange = 200..<300
             print("")
             print("====================================")
-            print("[requestPOST : http post 요청 성공]")
+            print("[requestGET : http get 요청 성공]")
             print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
             print("====================================")
             print("")
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
-                print("[requestPOST : http post 요청 에러]")
+                print("[requestGET : http get 요청 에러]")
                 print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
                 print("====================================")
                 print("")
@@ -119,6 +119,10 @@ class MyTimer {
                 if earthquakeDetect == "2" {
                     print("Earthquake finished, change .afterEarthquake")
                     self.controlClosure?(.afterEarthquake)
+                    self.stopTimer()
+                } else if earthquakeDetect == "0" {
+                    print("Earthquake error, change .normalState back")
+                    self.controlClosure?(.normalState)
                     self.stopTimer()
                 }
                 print(earthquakeDetect)

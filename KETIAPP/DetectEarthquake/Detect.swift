@@ -19,9 +19,51 @@ class Detect {
         return detect
     }
     
-//  Check earthquake status
-    func checkEarthquakeStatus() {
+    // GET magnitude and maximum intensity
+    func getMaxMagAndInt(completion: @escaping([String]) -> ()) {
+        var request = URLRequest(url: URL(string: "http://203.253.128.177:7579/Mobius/KETIDGZ_earthquake/web_scrapping/latest")!,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("12345", forHTTPHeaderField: "X-M2M-RI")
+        request.addValue("SOrigin", forHTTPHeaderField: "X-M2M-Origin")
         
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else {
+                print("Cannot GET data")
+                return
+            }
+            
+            let successRange = 200..<300
+            print("")
+            print("====================================")
+            print("[requestGET : http get 요청 성공]")
+            print("Response : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+            print("====================================")
+            print("")
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+                print("")
+                print("====================================")
+                print("[requestGET : http get 요청 에러]")
+                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
+                print("====================================")
+                print("")
+                return
+            }
+            
+            do {
+                let jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]
+                let jsonObject = jsonData?["m2m:cin"] as? [String:Any]
+                let con = jsonObject?["con"] as? String
+                let earthquakeInformation: String = con ?? "N/A"
+                let informationArray: [String] = earthquakeInformation.split(separator: "@").map { String($0) }
+                print("informationArray: \(informationArray)")
+                completion(informationArray)
+            } catch {
+                print("JSON Error occured")
+            }
+        }
+        task.resume()
     }
     
 //  TODO: Make getMagnitude method -
@@ -31,54 +73,39 @@ class Detect {
     }
     
 //  Set intensity string and color for intensityValue
-    func setIntensityView(intensity: Float) -> (String, UIColor) {
-        let value = Int(intensity)
-        var intensityString = ""
+    func setIntensityView(intensity: String) -> (String, UIColor) {
         var intensityColor: UIColor!
         
-        switch value {
-        case 1:
-            intensityString = "I"
+        switch intensity {
+        case "I":
             intensityColor = .clear
-        case 2:
-            intensityString = "II"
+        case "II":
             intensityColor = .systemCyan.withAlphaComponent(0.2)
-        case 3:
-            intensityString = "III"
+        case "III":
             intensityColor = .systemGreen.withAlphaComponent(0.3)
-        case 4:
-            intensityString = "IV"
-            intensityColor = .systemYellow.withAlphaComponent(0.4)
-        case 5:
-            intensityString = "V"
+        case "IV":
+            intensityColor = .systemYellow.withAlphaComponent(0.4) 
+        case "V":
             intensityColor = .systemOrange.withAlphaComponent(0.5)
-        case 6:
-            intensityString = "VI"
+        case "VI":
             intensityColor = .systemRed.withAlphaComponent(0.6)
-        case 7:
-            intensityString = "VII"
+        case "VII":
             intensityColor = .systemPurple.withAlphaComponent(0.7)
-        case 8:
-            intensityString = "VIII"
-            intensityColor = UIColor(red: 255*0.36, green: 255*0.16, blue: 255*0.15, alpha: 0.8)
-        case 9:
-            intensityString = "IX"
+        case "VIII":
+            intensityColor = UIColor(red: 0.36, green: 0.16, blue: 0.15, alpha: 0.8)
+        case "IX":
             intensityColor = .systemBrown.withAlphaComponent(0.9)
-        case 10:
-            intensityString = "X"
+        case "X":
             intensityColor = .black.withAlphaComponent(1)
-        case 11:
-            intensityString = "XI"
+        case "XI":
             intensityColor = .black.withAlphaComponent(1)
-        case 12:
-            intensityString = "XII"
+        case "XII":
             intensityColor = .black.withAlphaComponent(1)
         default:
-            intensityString = "I"
             intensityColor = .clear
         }
         
-        return (intensityString, intensityColor)
+        return (intensity, intensityColor)
     }
     
 //  Set magnitude string and color for magnitudeValue
@@ -90,9 +117,9 @@ class Detect {
         
         switch value {
         case 1:
-            magnitudeColor = UIColor(red: 255*0.6, green: 255*0.84, blue: 255*0.56, alpha: 0.2)
+            magnitudeColor = UIColor(red: 0.6, green: 0.84, blue: 0.56, alpha: 0.2)
         case 2:
-            magnitudeColor = UIColor(red: 255*0.38, green: 255*0.73, blue: 255*0.29, alpha: 0.3)
+            magnitudeColor = UIColor(red: 0.38, green: 0.73, blue: 0.29, alpha: 0.3)
         case 3:
             magnitudeColor = .systemYellow.withAlphaComponent(0.4)
         case 4:
@@ -100,13 +127,13 @@ class Detect {
         case 5:
             magnitudeColor = .systemPink.withAlphaComponent(0.6)
         case 6:
-            magnitudeColor = UIColor(red: 255*0.92, green: 255*0.4, blue: 255*0.38, alpha: 0.7)
+            magnitudeColor = UIColor(red: 0.92, green: 0.4, blue: 0.38, alpha: 0.7)
         case 7:
             magnitudeColor = .systemRed.withAlphaComponent(0.8)
         case 8:
-            magnitudeColor = UIColor(red: 255*0.82, green: 255*0.17, blue: 255*0.12, alpha: 0.9)
+            magnitudeColor = UIColor(red: 0.82, green: 0.17, blue: 0.12, alpha: 0.9)
         case 9, 10:
-            magnitudeColor = UIColor(red: 255*0.73, green: 255*0.15, blue: 255*0.1, alpha: 1)
+            magnitudeColor = UIColor(red: 0.73, green: 0.15, blue: 0.1, alpha: 1)
         default:
             magnitudeString = "-"
             magnitudeColor = .clear
