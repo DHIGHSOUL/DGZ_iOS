@@ -196,7 +196,7 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-//        getW3W()
+        getW3W()
         
         // Views
         magnitudeView.backgroundColor = .clear
