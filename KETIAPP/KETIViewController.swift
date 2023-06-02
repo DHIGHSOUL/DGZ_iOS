@@ -115,8 +115,6 @@ class KETIViewController: UIViewController {
         
         initializeState()
         print("Current earthquake state = \(earthquake)")
-        
-        //        setLocationInformation()
         checkAndChangeMainView()
     }
     
@@ -140,13 +138,14 @@ class KETIViewController: UIViewController {
         
         if earthquake == .whileEarthquake {
             earthquakeOccured()
+            softAnimation()
         } else if earthquake == .afterEarthquake {
             afterEarthquake()
+            softAnimation()
         } else if earthquake == .normalState {
             normalState()
+            softAnimation()
         }
-        
-        softAnimation()
     }
     
     // Setting views
@@ -268,8 +267,7 @@ class KETIViewController: UIViewController {
         }
         
         // Send my location information to Mobius platform
-        self.postMyLocationToMobius()
-        
+        postMyLocationToMobius()
         startCheckAfterEarthquake()
     }
     
@@ -458,8 +456,6 @@ class KETIViewController: UIViewController {
         let geocoder = CLGeocoder()
         let location = CLLocation(latitude: latitude, longitude: longitude)
         
-        //        print("getAddressLatitudeDouble: \(self.latitudeDouble), getAddressLongitudeDouble: \(self.longitudeDouble)")
-        
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let error = error {
                 print("Reverse geocoding failed: \(error)")
@@ -516,6 +512,8 @@ class KETIViewController: UIViewController {
     }
     
     func softAnimation() {
+        print("Soft animation tapped")
+        
         stateView.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.stateLabel.alpha = 1
@@ -644,6 +642,11 @@ class KETIViewController: UIViewController {
             }
             
             let successRange = 200..<300
+            
+            DispatchQueue.global().async {
+                self.postMyLocationToLocal()
+            }
+            
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
                 print("")
                 print("====================================")
@@ -658,26 +661,26 @@ class KETIViewController: UIViewController {
     }
     
     func postMyLocationToLocal() {
-        var request = URLRequest(url: URL(string: "http://192.168.0.253z:3000/earthquake/mylocation")!, timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "http://192.168.0.253:3000/earthquake")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard data != nil else {
-                print("Cannot send GET signal")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            let successRange = 200..<300
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+                print("Log\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\nLog\n")
                 return
             }
             
-            let successRange = 200..<300
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
-                print("")
-                print("====================================")
-                print("[LocalServer requestGET : http get 요청]")
-                print("Error : ", (response as? HTTPURLResponse)?.statusCode ?? 0)
-                print("====================================")
-                print("")
+            print("Status code = \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+            
+            guard let data = data else {
+                print(String(describing: error))
                 return
             }
+            print(String(data: data, encoding: .utf8)!)
         }
+        
         task.resume()
     }
     
@@ -719,11 +722,6 @@ class KETIViewController: UIViewController {
         actionImageView.image = UIImage(named: afterStateActions[afterStateActionIndex].imageName)?.withRenderingMode(.alwaysOriginal)
         actionDescription.text = afterStateActions[afterStateActionIndex].description
     }
-    
-    //    func openActionViewController() {
-    //        let actionViewController = ActionViewController()
-    //        navigationController?.pushViewController(actionViewController, animated: true)
-    //    }
     
     func openAdditionalInformationNotion() {
         if let notionURL = URL(string: "https://potent-barnacle-025.notion.site/689c9b6f4d3b4ebabc234ab52855f2ce") {
