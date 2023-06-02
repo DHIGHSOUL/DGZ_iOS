@@ -287,7 +287,7 @@ class KETIViewController: UIViewController {
         }
         
         W3WLabel.text = "W3W GET SUCCESS, Wait for competition"
-//        getW3W()
+        getW3W()
         
         // Get magnitude and intensity information
         detect.getMaxMagAndInt { arr in
