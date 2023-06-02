@@ -10,8 +10,7 @@ First, consider the state of stability when an earthquake has not occurred. In t
 - How to prepare before an earthquake occurs
 - A page summarizing information about earthquakes and guidelines that can help prepare for when an earthquake happens
 - Continuous monitoring for any occurrence of an earthquake, and promptly changing the View and Layout to reflect the situation during an earthquake when one occurs
-![32977D71-6AF8-42C5-B59A-43719F1AAB71_1_101_o](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/102d5c11-a566-4137-bd2c-c770381cf4a8)
-![2CB3836D-A065-4652-957E-3BBA2B5F5289_1_101_o](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/5da0c646-f4e1-421d-915b-6272800757b5)
+![BASIC 001](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/ee9cae50-d102-4e92-b306-ba6aef7d5db4)
 
 ### **While Earthquake (During an Earthquake)**
 
@@ -21,14 +20,13 @@ When an earthquake occurs, we recognize that there's a limit to the information 
 - Provide the magnitude and maximum expected intensity of the current earthquake
 - Link to the Meteorological Agency's 'Action Guidelines during an Earthquake' page to provide information on how users should act during an earthquake
 - Continuously monitor whether the earthquake has ended, and immediately change the View and Layout to the post-earthquake state when it has
-![7D00160E-62DD-4687-8223-C491FC9DF56B_1_101_o](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/eb4e5a3b-f8e7-44c7-9a7a-05989b6bde53)
-![4075BFF9-7466-44EC-81D0-467AD3262EA5_1_101_o](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/5bec2ab8-66f9-4fa2-bbf8-34c470c4504e)
+![BASIC 002](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/151384ae-606c-448c-99fe-72fc63d7b02b)
 
 ### **After Earthquake (After an Earthquake)**
-![DE1C4B20-DC83-4E3C-8CA6-4726BBF40E5B_1_101_o](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/3d3e5227-58f9-4cda-b99f-dbdf885557c1)
 
 After an earthquake, we provide information about post-earthquake response and evacuation guidelines and provide the shortest route to the nearest shelter to assist users in evacuating quickly.
 
 - Provide information about the final measured magnitude and the maximum measured intensity of the occurred earthquake
 - Provide brief information about the action guidelines after an earthquake
 - Use the latitude and longitude uploaded to the Mobius platform to generate a KakaoMap API URL, and display the shortest route to the nearest shelter through the KakaoMap application.
+![BASIC 003](https://github.com/DHIGHSOUL/DGZ_iOS/assets/73047755/e2cc8a31-2c81-4285-a38c-26373eac4d47)
